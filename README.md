@@ -51,16 +51,17 @@ forbid (
 
 ## Documentation
 
-| Title                                             | Description                                                          |
-| ------------------------------------------------- | -------------------------------------------------------------------- |
-| [Setup](./docs/Setup.md)                          | A quick start guide to running this project in a local Kind cluster  |
-| [Cedar Introduction](./docs/CedarIntroduction.md) | An introduction on Cedar policies and request evaluation             |
-| [Cedar Schemas](./docs/CedarSchemas.md)           | An overview of the Cedar structures used in policies in this project |
-| [Demonstration](./docs/Demo.md)                   | A walkthrough using Cedar access controls for Kubernetes             |
-| [Limitations](./docs/Limitations.md)              | A list of limitations of Cedar access control for Kubernetes         |
-| [Potential Features](./docs/FutureFeatures.md)    | A list of potential features to add to this project                  |
-| [Rejected Features](./docs/RejectedFeatures.md)   | Features that were tried but failed to work out                      |
-| [Development](./docs/Development.md)              | A guide to developing and contributing to this project               |
+| Title | Description |
+| - | - |
+| [Setup](./docs/Setup.md) | A quick start guide to running this project in a local Kind cluster |
+| [Cedar Introduction](./docs/CedarIntroduction.md) | An introduction on Cedar policies and request evaluation |
+| [Cedar Schemas](./docs/CedarSchemas.md) | An overview of the Cedar structures used in policies in this project |
+| [Demonstration](./docs/Demo.md) | A walkthrough using Cedar access controls for Kubernetes |
+| [RBAC Converter](./docs/ConvertRBAC.md) | A quick demo on how to convert Kubernetes RBACs on Cedar Policies |
+| [Limitations](./docs/Limitations.md) | A list of limitations of Cedar access control for Kubernetes |
+| [Potential Features](./docs/FutureFeatures.md) | A list of potential features to add to this project |
+| [Rejected Features](./docs/RejectedFeatures.md) | Features that were tried but failed to work out |
+| [Development](./docs/Development.md) | A guide to developing and contributing to this project |
 
 ## FAQ
 
