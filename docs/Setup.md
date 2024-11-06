@@ -2,6 +2,8 @@
 
 ## Local Setup with Kind
 
+### Prerequisites
+
 To run this project locally, you'll need to install [finch][finch], [Go][go], [kubectl][kubectl], [kind][kind], and [kubebuilder][kubebuilder] (if creating/modifying CRDs).
 
 [finch]: https://github.com/runfinch/finch
@@ -10,7 +12,14 @@ To run this project locally, you'll need to install [finch][finch], [Go][go], [k
 [kind]: https://kind.sigs.k8s.io/
 [kubebuilder]: https://book.kubebuilder.io/quick-start
 
-To install `kind` that works with `finch` and supports Kubernetes v1.31, you need at least v0.24.0:
+### Kind
+
+It's required to install `kind` version `v0.24.0`, in order to be compatible with Kubernetes `v1.31` and that works with `finch`.
+
+To install `kind` you can use `go` or with the package manager available in your O.S. We'll be covering [`brew`](https://brew.sh/) in this example, but you can find more installation options [here](https://kind.sigs.k8s.io/docs/user/quick-start/#installation).
+
+#### Go
+
 ```bash
 go install sigs.k8s.io/kind@v0.24.0
 # ensure $GOPATH/bin is in your $PATH
@@ -18,74 +27,166 @@ kind --version
 # kind version 0.24.0
 ```
 
-Then ensure you have a `finch` VM build
 ```bash
-finch version
+go: sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0: sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0: Get "https://proxy.golang.org/sigs.k8s.io/controller-tools/cmd/controller-gen/@v/v0.14.0.info": dial tcp: lookup proxy.golang.org: i/o timeout
+
+#### Homebrew
+
+```bash
+brew install kind
+kind --version
+# kind version 0.24.0
+```
+
+### Finch
+
+Use `brew` to install Finch, other installation options can be found [here](https://github.com/runfinch/finch?tab=readme-ov-file#installing-finch).
+
+```bash
+brew install --cask finch
+finch --version
+# finch version v1.4.1
+```
+
+After the installation, it's required that Finch VM is initialized. Then ensure you have a `finch` VM build.
+
+```bash
+finch vm init
+# INFO[0000] Initializing and starting Finch virtual machine... 
+# INFO[0049] Finch virtual machine started successfully   
+finch vm status
+# Running
+```
+
+If already have a VM initialized in the past, you may need to just start it.
+
+```bash
 finch vm start
+# INFO[0000] Starting existing Finch virtual machine...   
+# INFO[0019] Finch virtual machine started successfully   
+finch vm status
+# Running
 ```
 
 ## Local Quickstart
 
-1. For an optional local build of the binaries, you can run:
+1. Clone this repository to your local environment or IDE.
+
+    ```bash
+    git clone https://github.com/awslabs/cedar-access-control-for-k8s.git
+    cd cedar-access-control-for-k8s
+    ```
+
+2. For an optional local build of the binaries, you can run:
+
     ```bash
     make build
     ```
-2. Start the Kind cluster
-    This will build the webhook image, the Kind image, and create the Kind cluster.
-    This cluster is configured to authorize and validate requests via the Cedar webhook:
+
+    If you encounter an error related to `goproxy` like the one below, try exporting the following environment variable.
+
+    ```bash
+    # go: sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0: sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0: Get "https://proxy.golang.org/sigs.k8s.io/controller-tools/cmd/controller-gen/@v/v0.14.0.info": dial tcp: lookup proxy.golang.org: i/o timeout
+
+    export GOPROXY=direct
+    ```
+
+3. Start the Kind cluster. This will build the webhook image, the Kind image, and create the Kind cluster. This cluster is configured to authorize and validate requests via the Cedar webhook:
+
    ```bash
    make kind
    ```
-3. Create policies. There's an example in `demo/authorization-policy.yaml` that is auto-created, but feel free to modify it or create more
+
+4. (Optional) Create additional policies. There's an example in `demo/authorization-policy.yaml` that is auto-created, but feel free to modify it or create more
+
    ```bash
    # edit demo/authorization-policy.yaml
    kubectl apply -f demo/authorization-policy.yaml
    ```
-4. Generate a kubeconfig for a test user.
-    The user has the name `test-user` with the group `test-group`. 
+
+5. Generate a `kubeconfig` for a test user. The user has the name `test-user` with the group `test-group`.
+
     ```bash
     make test-user-kubeconfig
     # Lookup the username of the test user
     KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl auth whoami
+    # ATTRIBUTE   VALUE
+    # Username    test-user
+    # Groups      [viewers test-group system:authenticated]
     ```
-5. Now you can make requests! You'll need use the generated kubeconfig `./mount/test-user-kubeconfig.yam` created in the previous step. 
-    Your default kubeconfig (`~/.kube/config`) will be auto-configured by kind with a cluster administrator identity, so `kubectl` without specifying a kubeconfig should always just work.
+
+6. Now you can make requests! You'll need to use the generated `kubeconfig` in `./mount/test-user-kubeconfig.yam` created in the previous step. Your default `kubeconfig` (`~/.kube/config`) will be autoconfigured by kind with a cluster administrator identity, so `kubectl` without specifying a `kubeconfig` should always just work.
+
+    Try getting resources.
+
     ```bash
-    # Try getting resources
     KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get pods --all-namespaces # allowed
     KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get nodes # denied
+    ```
 
-    # Attribute-based label selection example
-    KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get secrets # denied
-    KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get secrets -l owner=test-user --show-labels # allowed
+    As `cluster-admin`, list Secrets.
 
-    # As admin, list secrets
+    ```bash
     kubectl get secrets --show-labels
+    ```
 
-    # Impersonation
+    Try listing Secrets with the `test-user`.
+
+    ```bash
+    KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get secrets # denied
+    ```
+
+    Try listing Secrets using attribute-based label selection.
+
+    ```bash
+    KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get secrets -l owner=test-user --show-labels # allowed
+    ```
+
+    Impersonation
+
+    ```bash
     KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get service \
         --as system:serviceaccount:default:service-manager
     ```
-6. Try out admission policies:
+
+7. Try out admission policies:
+
     ```bash
-    # (Optional) Update the validating webhook API groups/versions/resources you want validated
-    # by edting manifests/admission-webhook.yaml before applying the webhook
-
     make admission-webhook
+    ```
 
-    # Apply an example admission policy
+    (Optional) Update the validating webhook API groups/versions/resources you want validated by editing `manifests/admission-webhook.yaml`. Then apply the custom example admission policy.
+
+    ```bash
     kubectl apply -f demo/admission-policy.yaml
+    ```
 
-    # Create sample user in requires-labels group
+    Create sample user in requires-labels group.
+
+    ```bash
     make sample-user-kubeconfig
     KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl auth whoami
+    # ATTRIBUTE   VALUE
+    # Username    sample-user
+    # Groups      [sample-group requires-labels system:authenticated]
+    ```
 
-    # Try to create a configmap without labels as the sample user
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl create configmap test-config --from-literal=k1=v1
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl get configmap
+    Try to create a ConfigMap without labels as the sample user.
 
-    # Create a configmap as the sample user with the label owner={principal.name}
-    cat << EOF > sample-config.yaml
+    ```bash
+    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl create configmap test-config --from-literal=k1=v1 # allowed
+    ```
+
+    Try to list existing ConfigMaps.
+
+    ```bash
+    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl get configmap # denied
+    ```
+
+    Create a ConfigMap as the sample user with the label `owner={principal.name}`.
+
+    ```bash
+    cat << EOF | kubectl apply -f -
     apiVersion: v1
     kind: ConfigMap
     metadata:
@@ -95,48 +196,25 @@ finch vm start
     data:
         stage: test
     EOF
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl create -f ./sample-config.yaml
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl get configmap -l owner=sample-user --show-labels
+
+    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl get configmap -l owner=sample-user --show-labels # allowed
     ```
 
-And for teardown/cleanup:
+## Cleanup
+
+For tearing down the Kind cluster.
+
 ```bash
 make clean-kind
 ```
 
-## Convert RBAC policies
+And to cleanup the Finch VM.
 
-There's an RBAC converter that works on ClusterRoleBindings or RoleBindings.
-You can convert all CRBs/RBs by specifing a type with no names, or a comma-separated list of names after the type.
-You can add `--output=crd` to emit Policy CRD YAML containing the cedar policies.
 ```bash
-./bin/converter clusterrolebinding --format cedar > all-crb.cedar
-./bin/converter clusterrolebinding --format crd > all-crb.yaml
-
-./bin/converter rolebinding --format cedar > all-rb.cedar
-./bin/converter rolebinding --format crd > all-rb.yaml
-```
-
-Which yields
-
-```cedar
-// cluster-admin
-@clusterRoleBinding("cluster-admin")
-@clusterRole("cluster-admin")
-@policyRule("01")
-permit (
-  principal in k8s::Group::"system:masters",
-  action,
-  resource is k8s::NonResourceURL
-);
-
-@clusterRoleBinding("cluster-admin")
-@clusterRole("cluster-admin")
-@policyRule("00")
-permit (
-  principal in k8s::Group::"system:masters",
-  action,
-  resource is k8s::Resource
-);
-// ...
+finch vm stop                                                                                               
+# INFO[0000] Stopping existing Finch virtual machine...   
+# INFO[0005] Finch virtual machine stopped successfully   
+finch vm remove
+# INFO[0000] Removing existing Finch virtual machine...   
+# INFO[0000] Finch virtual machine removed successfully   
 ```
