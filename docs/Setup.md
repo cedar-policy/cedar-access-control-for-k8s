@@ -14,9 +14,9 @@ To run this project locally, you'll need to install [finch][finch], [Go][go], [k
 
 ### Kind
 
-It's required to install `kind` version `v0.24.0`, in order to be compatible with Kubernetes `v1.31` and that works with `finch`.
+It's required to install `kind` version `v0.24.0` (or later), in order to be compatible with Kubernetes `v1.31` and Finch.
 
-To install `kind` you can use `go` or with the package manager available in your O.S. We'll be covering [`brew`](https://brew.sh/) in this example, but you can find more installation options [here](https://kind.sigs.k8s.io/docs/user/quick-start/#installation).
+To install `kind` you can use `go` or the package manager available in your O.S. We'll be covering [`brew`](https://brew.sh/) in this example, but you can find more installation options [here](https://kind.sigs.k8s.io/docs/user/quick-start/#installation).
 
 #### Go
 
@@ -26,9 +26,6 @@ go install sigs.k8s.io/kind@v0.24.0
 kind --version
 # kind version 0.24.0
 ```
-
-```bash
-go: sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0: sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0: Get "https://proxy.golang.org/sigs.k8s.io/controller-tools/cmd/controller-gen/@v/v0.14.0.info": dial tcp: lookup proxy.golang.org: i/o timeout
 
 #### Homebrew
 
