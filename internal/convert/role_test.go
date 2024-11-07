@@ -13,7 +13,7 @@ import (
 )
 
 func TestRoleBindingToCedar(t *testing.T) {
-	// TODO:
+	// TODO: test case cleanup
 	// * read testcases from input files containing CRB and CR objects
 	// * add all of Kind's in-cluster roles/roleBindings
 	// * migrate custom policies defined below to input files

@@ -17,6 +17,13 @@ const (
 	PrincipalUIDEntityType        = cedartypes.EntityType("k8s::" + PrincipalUIDEntityName)
 	NonResourceURLEntityType      = cedartypes.EntityType("k8s::" + NonResourceURLEntityName)
 	ResourceEntityType            = cedartypes.EntityType("k8s::" + ResourceEntityName)
+
+	StringType = "String"
+	LongType   = "Long"
+	BoolType   = "Boolean"
+	SetType    = "Set"
+	RecordType = "Record"
+	EntityType = "Entity"
 )
 
 // PrincipalUIDEntity returns a Cedar Entity for a PrincipalUID
@@ -24,7 +31,7 @@ func PrincipalUIDEntity() Entity {
 	return Entity{
 		MemberOfTypes: []string{},
 		Shape: EntityShape{
-			Type:       "Record",
+			Type:       RecordType,
 			Attributes: map[string]EntityAttribute{},
 		},
 	}
@@ -35,9 +42,9 @@ func NonResourceURLEntity() Entity {
 	return Entity{
 		MemberOfTypes: []string{},
 		Shape: EntityShape{
-			Type: "Record",
+			Type: RecordType,
 			Attributes: map[string]EntityAttribute{
-				"path": {Type: "String", Required: true},
+				"path": {Type: StringType, Required: true},
 			},
 		},
 	}
@@ -46,11 +53,11 @@ func NonResourceURLEntity() Entity {
 // FieldRequirementEntityShape returns a Cedar EntityShape for a FieldRequirement
 func FieldRequirementEntityShape() EntityShape {
 	return EntityShape{
-		Type: "Record",
+		Type: RecordType,
 		Attributes: map[string]EntityAttribute{
-			"key":   {Type: "String", Required: true},
-			"op":    {Type: "String", Required: true},
-			"value": {Type: "String", Required: true},
+			"key":   {Type: StringType, Required: true},
+			"op":    {Type: StringType, Required: true},
+			"value": {Type: StringType, Required: true},
 		},
 	}
 }
@@ -58,11 +65,11 @@ func FieldRequirementEntityShape() EntityShape {
 // LabelRequirementEntityShape returns a Cedar EntityShape for a LabelRequirement
 func LabelRequirementEntityShape() EntityShape {
 	return EntityShape{
-		Type: "Record",
+		Type: RecordType,
 		Attributes: map[string]EntityAttribute{
-			"key":      {Type: "String", Required: true},
-			"operator": {Type: "String", Required: true},
-			"values":   {Type: "Set", Element: &EntityAttributeElement{Type: "String"}, Required: true},
+			"key":      {Type: StringType, Required: true},
+			"operator": {Type: StringType, Required: true},
+			"values":   {Type: SetType, Element: &EntityAttributeElement{Type: StringType}, Required: true},
 		},
 	}
 }
@@ -71,20 +78,20 @@ func LabelRequirementEntityShape() EntityShape {
 func ResourceEntity() Entity {
 	return Entity{
 		Shape: EntityShape{
-			Type: "Record",
+			Type: RecordType,
 			Attributes: map[string]EntityAttribute{
-				"apiGroup":    {Type: "String", Required: true},
-				"resource":    {Type: "String", Required: true},
-				"namespace":   {Type: "String"},
-				"name":        {Type: "String"},
-				"subresource": {Type: "String"},
+				"apiGroup":    {Type: StringType, Required: true},
+				"resource":    {Type: StringType, Required: true},
+				"namespace":   {Type: StringType},
+				"name":        {Type: StringType},
+				"subresource": {Type: StringType},
 				"fieldSelector": {
-					Type:     "Set",
+					Type:     SetType,
 					Required: false,
 					Element:  &EntityAttributeElement{Type: FieldRequirementName},
 				},
 				"labelSelector": {
-					Type:     "Set",
+					Type:     SetType,
 					Required: false,
 					Element:  &EntityAttributeElement{Type: LabelRequirementName},
 				},

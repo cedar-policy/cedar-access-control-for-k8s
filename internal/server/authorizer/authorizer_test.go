@@ -867,7 +867,7 @@ forbid (
 			},
 			storeComplete: false,
 			wantDecision:  authorizer.DecisionNoOpinion,
-			wantReason:    `policies not yet loaded: no opinion`,
+			wantReason:    ``,
 		},
 		{
 			name: "allow self",
@@ -899,7 +899,7 @@ forbid (
 			},
 			storeComplete: true,
 			wantDecision:  authorizer.DecisionAllow,
-			wantReason:    `cedar authorizer is always allowed`,
+			wantReason:    `cedar authorizer is always allowed to access policies`,
 		},
 	}
 

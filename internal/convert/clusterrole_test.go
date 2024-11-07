@@ -16,7 +16,7 @@ import (
 var update = flag.Bool("update", false, "update testdata")
 
 func TestClusterRoleBindingToCedar(t *testing.T) {
-	// TODO:
+	// TODO: Test case cleanup
 	// * read testcases from input files containing CRB and CR objects
 	// * add all of Kind's in-cluster crbs/crs
 	// * migrate custom policies defined below to input files

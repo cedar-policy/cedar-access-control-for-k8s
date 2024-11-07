@@ -51,6 +51,7 @@ func main() {
 	if err != nil {
 		klog.Fatalf("Error building kubernetes clientset: %v", err)
 	}
+	ctx := context.Background()
 
 	switch kind {
 	case "rolebinding":
@@ -58,14 +59,14 @@ func main() {
 			Items: []rbacv1.RoleBinding{},
 		}
 		if len(resourceNames) == 0 {
-			rbs, err = cs.RbacV1().RoleBindings("").List(context.TODO(), metav1.ListOptions{})
+			rbs, err = cs.RbacV1().RoleBindings("").List(ctx, metav1.ListOptions{})
 			if err != nil {
 				klog.Fatalf("Error listing ClusterRoleBindings: %v", err)
 			}
 
 		} else {
 			for _, resourceName := range resourceNames {
-				rb, err := cs.RbacV1().RoleBindings(*namespace).Get(context.TODO(), resourceName, metav1.GetOptions{})
+				rb, err := cs.RbacV1().RoleBindings(*namespace).Get(ctx, resourceName, metav1.GetOptions{})
 				if err != nil {
 					klog.Errorf("Error getting RoleBinding %s: %v. Skipping this one", resourceName, err)
 					continue
@@ -77,14 +78,14 @@ func main() {
 			var ruler convert.Ruler
 			switch binding.RoleRef.Kind {
 			case "ClusterRole":
-				cr, err := cs.RbacV1().ClusterRoles().Get(context.TODO(), binding.RoleRef.Name, metav1.GetOptions{})
+				cr, err := cs.RbacV1().ClusterRoles().Get(ctx, binding.RoleRef.Name, metav1.GetOptions{})
 				if err != nil {
 					klog.Errorf("Error getting ClusterRole %s: %v. Skipping this one", binding.RoleRef.Name, err)
 					continue
 				}
 				ruler = convert.NewClusterRoleRuler(*cr)
 			case "Role":
-				role, err := cs.RbacV1().Roles(binding.Namespace).Get(context.TODO(), binding.RoleRef.Name, metav1.GetOptions{})
+				role, err := cs.RbacV1().Roles(binding.Namespace).Get(ctx, binding.RoleRef.Name, metav1.GetOptions{})
 				if err != nil {
 					klog.Errorf("Error getting Role %s: %v. Skipping this one", binding.RoleRef.Name, err)
 					continue
@@ -123,13 +124,13 @@ func main() {
 			Items: []rbacv1.ClusterRoleBinding{},
 		}
 		if len(resourceNames) == 0 {
-			crbs, err = cs.RbacV1().ClusterRoleBindings().List(context.TODO(), metav1.ListOptions{})
+			crbs, err = cs.RbacV1().ClusterRoleBindings().List(ctx, metav1.ListOptions{})
 			if err != nil {
 				klog.Fatalf("Error listing ClusterRoleBindings: %v", err)
 			}
 		} else {
 			for _, resourceName := range resourceNames {
-				crb, err := cs.RbacV1().ClusterRoleBindings().Get(context.TODO(), resourceName, metav1.GetOptions{})
+				crb, err := cs.RbacV1().ClusterRoleBindings().Get(ctx, resourceName, metav1.GetOptions{})
 				if err != nil {
 					klog.Errorf("Error getting ClusterRoleBinding %s: %v. Skipping this one", resourceName, err)
 					continue
@@ -138,7 +139,7 @@ func main() {
 			}
 		}
 		for i, crb := range crbs.Items {
-			cr, err := cs.RbacV1().ClusterRoles().Get(context.TODO(), crb.RoleRef.Name, metav1.GetOptions{})
+			cr, err := cs.RbacV1().ClusterRoles().Get(ctx, crb.RoleRef.Name, metav1.GetOptions{})
 			if err != nil {
 				klog.Errorf("Error getting ClusterRole %s: %v. Skipping this one", crb.RoleRef.Name, err)
 				continue

@@ -82,11 +82,11 @@ type EntityShape struct {
 //
 // Element may on be used when the Type is "Set"
 type EntityAttribute struct {
-	Type       string                     `json:"type"`
-	Name       string                     `json:"name,omitempty"`
-	Required   bool                       `json:"required"` // omitempty is not used because cedar assumes its required
-	Element    *EntityAttributeElement    `json:"element,omitempty"`
-	Attributes map[string]EntityAttribute `json:"attributes,omitempty"`
+	Type       string
+	Name       string
+	Required   bool
+	Element    *EntityAttributeElement
+	Attributes map[string]EntityAttribute
 }
 
 // this is a gross hack to work around the fact that cedar assumes that the attributes field is always present if the type is
@@ -131,7 +131,7 @@ func (ea *EntityAttribute) toNonRecordEA() *nonRecordEntityAttribute {
 //
 // the attributes are populated with an empty map if the Type is a "Record"
 func (ea EntityAttribute) MarshalJSON() ([]byte, error) {
-	if ea.Type == "Record" && len(ea.Attributes) == 0 {
+	if ea.Type == RecordType && len(ea.Attributes) == 0 {
 		return json.Marshal(ea.toRecordEA())
 	}
 	return json.Marshal(ea.toNonRecordEA())

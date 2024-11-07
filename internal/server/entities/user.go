@@ -71,7 +71,7 @@ func UserToCedarEntity(user user.Info) (cedartypes.EntityUID, cedartypes.Entitie
 		attributes[cedartypes.String("name")] = cedartypes.String(parts[3])
 	}
 
-	// TODO: use key/value maps once supported
+	// TODO: ENTITY TAGS: use entity tags once supported
 	extraValues := []cedartypes.Value{}
 	for k, v := range user.GetExtra() {
 		extraVV := []cedartypes.Value{}

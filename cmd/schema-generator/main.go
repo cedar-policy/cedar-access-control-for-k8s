@@ -123,6 +123,14 @@ func main() {
 				continue
 			}
 			klog.InfoS("Converting schema for API", "api", v.Name, "version", v.Version)
+
+			// TODO: In order to find which Admission verbs apply to which resources:
+			// * Get the APIResourceList{} (/{k}) for a given API
+			// * In ModifySchemaForAPIVersion(),
+			//    * Find the APIResourceList.resources[].Kind
+			//    * Look for the corresponding admission verbs (delete/deletecollection/create/patch/update)
+			//    * Figure out how to determine which subresource maps to CONNECT
+
 			err = convert.ModifySchemaForAPIVersion(openAPISpec, cedarschema, v.Name, v.Version, *actionNs)
 			if err != nil {
 				klog.ErrorS(err, "Failed to get convert to cedar schema for API, skipping", "api", v.Name, "version", v.Version)
@@ -131,7 +139,7 @@ func main() {
 		}
 	}
 	cedarschema.SortActionEntities()
-	// TODO: this is just here until we get real key/value map support
+	// TODO: ENTITY TAGS: this is just here until we get real key/value map support
 	schema.ModifyObjectMetaMaps(cedarschema)
 
 	data, err := json.MarshalIndent(cedarschema, "", "\t")

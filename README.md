@@ -23,7 +23,7 @@ permit (
     resource.resource == "secret"
 };
 
-// Authorization cedar policy permitting actions on a secret that match a users's name
+// Authorization cedar policy permitting actions on a secret that match a user's name
 permit (
     principal is k8s::User,
     action in [k8s::Action::"get", k8s::Action::"update", k8s::Action::"delete"],
@@ -145,7 +145,7 @@ This gives administrators powerful and unmatched new tools to secure their clust
 
 1. **How does Cedar differ from Kubernetes RBAC?**
 
-    Kubernetes [Role Based Access Control][rbac] (RBAC) is an built-in authorization policy framework used to authorize Kubernetes requests.
+    Kubernetes [Role Based Access Control][rbac] (RBAC) is a built-in authorization policy framework used to authorize Kubernetes requests.
     With RBAC, you define a policy (`ClusterRole` or `Role`) that enumerates what API groups, resources, and verbs are permitted.
     You then define a binding (`ClusterRoleBinding` or `RoleBinding`) that associates Users, Groups, or ServiceAccounts to one of those policies.
     RBAC is allow-only (no denials), and is suited for authorizing clients that need to access either specifically named resources, or whole sets of resources.
@@ -178,11 +178,11 @@ This gives administrators powerful and unmatched new tools to secure their clust
 5. **Can I use Cedar for Kubernetes policy enforcement?**
 
     While Cedar offers powerful authorization guarantees, there are policy enforcement requirements common to Kubernetes that are not [formally analyzable][analyzable].
-    An example use case that illustrates this is an enforcment that all containers in all pods in a cluster have maximum memory limit set.
+    An example use case that illustrates this is an enforcement that all containers in all pods in a cluster have maximum memory limit set.
     Cedar is powered by automated reasoning, including an [SMT solver], which does not implement loops or map functions.
     Rather than viewing Cedar as a replacement for admission restrictions tools like [Open Policy Agent/Gatekeeper][gatekeeper] or [Kyverno][kyverno], it is best seen as an additional tool for access control enforcement.
 
-6. **Will this be built into Amazon Elasitc Kubernetes Service (EKS)?**
+6. **Will this be built into Amazon Elastic Kubernetes Service (EKS)?**
 
     This project is a public experiment, and not currently integrated into Amazon EKS.
     We welcome your feedback, want to know what does or doesn't work for your use cases, and whether [you'd like to see this integrated into Amazon EKS][containers-roadmap].

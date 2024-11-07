@@ -33,10 +33,10 @@ type cedarWebhookAuthorizer struct {
 func (e *cedarWebhookAuthorizer) Authorize(ctx context.Context, requestAttributes authorizer.Attributes) (authorizer.Decision, string, error) {
 	// Always allow self to read policies
 	if requestAttributes.GetUser().GetName() == options.CedarAuthorizerIdentityName &&
-		requestAttributes.IsReadOnly() && // TOOD validate this authorizer only needs get/list/watch?
+		requestAttributes.IsReadOnly() &&
 		requestAttributes.GetAPIGroup() == "cedar.k8s.aws" &&
 		requestAttributes.GetResource() == "policies" {
-		return authorizer.DecisionAllow, "cedar authorizer is always allowed", nil
+		return authorizer.DecisionAllow, "cedar authorizer is always allowed to access policies", nil
 	}
 
 	if strings.HasPrefix(requestAttributes.GetUser().GetName(), "system:") &&
@@ -48,8 +48,8 @@ func (e *cedarWebhookAuthorizer) Authorize(ctx context.Context, requestAttribute
 	}
 
 	if !e.store.InitalPolicyLoadComplete() {
-		// TODO: probably log when this isn't yet loaded?
-		return authorizer.DecisionNoOpinion, "policies not yet loaded: no opinion", nil
+		klog.V(3).Info("Policy store not yet loaded, issuing no opinion")
+		return authorizer.DecisionNoOpinion, "", nil
 	}
 	entities, request := RecordToCedarResource(requestAttributes)
 	entityJson, _ := entities.MarshalJSON()
@@ -91,10 +91,9 @@ func RecordToCedarResource(attributes authorizer.Attributes) (cedartypes.Entitie
 
 	var resourceEntityFunc entityDerivationFunc = NonResourceToCedarEntity
 	if attributes.IsResourceRequest() {
+		resourceEntityFunc = ResourceToCedarEntity
 		if attributes.GetVerb() == schema.AuthorizationActionImpersonate {
 			resourceEntityFunc = ImpersonatedResourceToCedarEntity
-		} else {
-			resourceEntityFunc = ResourceToCedarEntity
 		}
 	}
 	entity := resourceEntityFunc(attributes)

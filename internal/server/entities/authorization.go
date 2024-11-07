@@ -23,6 +23,8 @@ func ResourceRequestToPath(attributes authorizer.Attributes) string {
 		resp = resp + "/" + attributes.GetSubresource()
 	}
 
-	// TODO: implement field and label selectors? Or should those be request context and pulled out of the resource?
+	// TODO: implement field and label selectors?
+	// If we're never adding both a filtered request and an unfiltered reqeust in the entity list,
+	// it probably doesn't matter
 	return resp
 }

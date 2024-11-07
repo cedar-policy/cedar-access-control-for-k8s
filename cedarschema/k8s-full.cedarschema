@@ -175,26 +175,26 @@ namespace k8s {
 }
 
 namespace admissionregistration::v1 {
-	entity AuditAnnotation = {
+	type AuditAnnotation = {
 		"key": __cedar::String,
 		"valueExpression": __cedar::String
 	};
-	entity ExpressionWarning = {
+	type ExpressionWarning = {
 		"fieldRef": __cedar::String,
 		"warning": __cedar::String
 	};
-	entity MatchCondition = {
+	type MatchCondition = {
 		"expression": __cedar::String,
 		"name": __cedar::String
 	};
-	entity MatchResources = {
+	type MatchResources = {
 		"excludeResourceRules"?: Set < NamedRuleWithOperations >,
 		"matchPolicy"?: __cedar::String,
 		"namespaceSelector"?: meta::v1::LabelSelector,
 		"objectSelector"?: meta::v1::LabelSelector,
 		"resourceRules"?: Set < NamedRuleWithOperations >
 	};
-	entity MutatingWebhook = {
+	type MutatingWebhook = {
 		"admissionReviewVersions": Set < __cedar::String >,
 		"clientConfig": WebhookClientConfig,
 		"failurePolicy"?: __cedar::String,
@@ -208,6 +208,88 @@ namespace admissionregistration::v1 {
 		"sideEffects": __cedar::String,
 		"timeoutSeconds"?: __cedar::Long
 	};
+	type NamedRuleWithOperations = {
+		"apiGroups"?: Set < __cedar::String >,
+		"apiVersions"?: Set < __cedar::String >,
+		"operations"?: Set < __cedar::String >,
+		"resourceNames"?: Set < __cedar::String >,
+		"resources"?: Set < __cedar::String >,
+		"scope"?: __cedar::String
+	};
+	type ParamKind = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String
+	};
+	type ParamRef = {
+		"name"?: __cedar::String,
+		"namespace"?: __cedar::String,
+		"parameterNotFoundAction"?: __cedar::String,
+		"selector"?: meta::v1::LabelSelector
+	};
+	type RuleWithOperations = {
+		"apiGroups"?: Set < __cedar::String >,
+		"apiVersions"?: Set < __cedar::String >,
+		"operations"?: Set < __cedar::String >,
+		"resources"?: Set < __cedar::String >,
+		"scope"?: __cedar::String
+	};
+	type ServiceReference = {
+		"name": __cedar::String,
+		"namespace": __cedar::String,
+		"path"?: __cedar::String,
+		"port"?: __cedar::Long
+	};
+	type TypeChecking = {
+		"expressionWarnings"?: Set < ExpressionWarning >
+	};
+	type ValidatingAdmissionPolicyBindingSpec = {
+		"matchResources"?: MatchResources,
+		"paramRef"?: ParamRef,
+		"policyName"?: __cedar::String,
+		"validationActions"?: Set < __cedar::String >
+	};
+	type ValidatingAdmissionPolicySpec = {
+		"auditAnnotations"?: Set < AuditAnnotation >,
+		"failurePolicy"?: __cedar::String,
+		"matchConditions"?: Set < MatchCondition >,
+		"matchConstraints"?: MatchResources,
+		"paramKind"?: ParamKind,
+		"validations"?: Set < Validation >,
+		"variables"?: Set < Variable >
+	};
+	type ValidatingAdmissionPolicyStatus = {
+		"conditions"?: Set < meta::v1::Condition >,
+		"observedGeneration"?: __cedar::Long,
+		"typeChecking"?: TypeChecking
+	};
+	type ValidatingWebhook = {
+		"admissionReviewVersions": Set < __cedar::String >,
+		"clientConfig": WebhookClientConfig,
+		"failurePolicy"?: __cedar::String,
+		"matchConditions"?: Set < MatchCondition >,
+		"matchPolicy"?: __cedar::String,
+		"name": __cedar::String,
+		"namespaceSelector"?: meta::v1::LabelSelector,
+		"objectSelector"?: meta::v1::LabelSelector,
+		"rules"?: Set < RuleWithOperations >,
+		"sideEffects": __cedar::String,
+		"timeoutSeconds"?: __cedar::Long
+	};
+	type Validation = {
+		"expression": __cedar::String,
+		"message"?: __cedar::String,
+		"messageExpression"?: __cedar::String,
+		"reason"?: __cedar::String
+	};
+	type Variable = {
+		"expression": __cedar::String,
+		"name": __cedar::String
+	};
+	type WebhookClientConfig = {
+		"caBundle"?: __cedar::String,
+		"service"?: ServiceReference,
+		"url"?: __cedar::String
+	};
 	entity MutatingWebhookConfiguration = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -219,40 +301,6 @@ namespace admissionregistration::v1 {
 		"items": Set < MutatingWebhookConfiguration >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity NamedRuleWithOperations = {
-		"apiGroups"?: Set < __cedar::String >,
-		"apiVersions"?: Set < __cedar::String >,
-		"operations"?: Set < __cedar::String >,
-		"resourceNames"?: Set < __cedar::String >,
-		"resources"?: Set < __cedar::String >,
-		"scope"?: __cedar::String
-	};
-	entity ParamKind = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String
-	};
-	entity ParamRef = {
-		"name"?: __cedar::String,
-		"namespace"?: __cedar::String,
-		"parameterNotFoundAction"?: __cedar::String,
-		"selector"?: meta::v1::LabelSelector
-	};
-	entity RuleWithOperations = {
-		"apiGroups"?: Set < __cedar::String >,
-		"apiVersions"?: Set < __cedar::String >,
-		"operations"?: Set < __cedar::String >,
-		"resources"?: Set < __cedar::String >,
-		"scope"?: __cedar::String
-	};
-	entity ServiceReference = {
-		"name": __cedar::String,
-		"namespace": __cedar::String,
-		"path"?: __cedar::String,
-		"port"?: __cedar::Long
-	};
-	entity TypeChecking = {
-		"expressionWarnings"?: Set < ExpressionWarning >
 	};
 	entity ValidatingAdmissionPolicy = {
 		"apiVersion"?: __cedar::String,
@@ -273,44 +321,11 @@ namespace admissionregistration::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity ValidatingAdmissionPolicyBindingSpec = {
-		"matchResources"?: MatchResources,
-		"paramRef"?: ParamRef,
-		"policyName"?: __cedar::String,
-		"validationActions"?: Set < __cedar::String >
-	};
 	entity ValidatingAdmissionPolicyList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < ValidatingAdmissionPolicy >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity ValidatingAdmissionPolicySpec = {
-		"auditAnnotations"?: Set < AuditAnnotation >,
-		"failurePolicy"?: __cedar::String,
-		"matchConditions"?: Set < MatchCondition >,
-		"matchConstraints"?: MatchResources,
-		"paramKind"?: ParamKind,
-		"validations"?: Set < Validation >,
-		"variables"?: Set < Variable >
-	};
-	entity ValidatingAdmissionPolicyStatus = {
-		"conditions"?: Set < meta::v1::Condition >,
-		"observedGeneration"?: __cedar::Long,
-		"typeChecking"?: TypeChecking
-	};
-	entity ValidatingWebhook = {
-		"admissionReviewVersions": Set < __cedar::String >,
-		"clientConfig": WebhookClientConfig,
-		"failurePolicy"?: __cedar::String,
-		"matchConditions"?: Set < MatchCondition >,
-		"matchPolicy"?: __cedar::String,
-		"name": __cedar::String,
-		"namespaceSelector"?: meta::v1::LabelSelector,
-		"objectSelector"?: meta::v1::LabelSelector,
-		"rules"?: Set < RuleWithOperations >,
-		"sideEffects": __cedar::String,
-		"timeoutSeconds"?: __cedar::Long
 	};
 	entity ValidatingWebhookConfiguration = {
 		"apiVersion"?: __cedar::String,
@@ -324,24 +339,147 @@ namespace admissionregistration::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity Validation = {
-		"expression": __cedar::String,
-		"message"?: __cedar::String,
-		"messageExpression"?: __cedar::String,
-		"reason"?: __cedar::String
-	};
-	entity Variable = {
-		"expression": __cedar::String,
-		"name": __cedar::String
-	};
-	entity WebhookClientConfig = {
-		"caBundle"?: __cedar::String,
-		"service"?: ServiceReference,
-		"url"?: __cedar::String
-	};
 }
 
 namespace apps::v1 {
+	type DaemonSetCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status": __cedar::String,
+		"type": __cedar::String
+	};
+	type DaemonSetSpec = {
+		"minReadySeconds"?: __cedar::Long,
+		"revisionHistoryLimit"?: __cedar::Long,
+		"selector": meta::v1::LabelSelector,
+		"template": core::v1::PodTemplateSpec,
+		"updateStrategy"?: DaemonSetUpdateStrategy
+	};
+	type DaemonSetStatus = {
+		"collisionCount"?: __cedar::Long,
+		"conditions"?: Set < DaemonSetCondition >,
+		"currentNumberScheduled": __cedar::Long,
+		"desiredNumberScheduled": __cedar::Long,
+		"numberAvailable"?: __cedar::Long,
+		"numberMisscheduled": __cedar::Long,
+		"numberReady": __cedar::Long,
+		"numberUnavailable"?: __cedar::Long,
+		"observedGeneration"?: __cedar::Long,
+		"updatedNumberScheduled"?: __cedar::Long
+	};
+	type DaemonSetUpdateStrategy = {
+		"rollingUpdate"?: RollingUpdateDaemonSet,
+		"type"?: __cedar::String
+	};
+	type DeploymentCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"lastUpdateTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status": __cedar::String,
+		"type": __cedar::String
+	};
+	type DeploymentSpec = {
+		"minReadySeconds"?: __cedar::Long,
+		"paused"?: __cedar::Bool,
+		"progressDeadlineSeconds"?: __cedar::Long,
+		"replicas"?: __cedar::Long,
+		"revisionHistoryLimit"?: __cedar::Long,
+		"selector": meta::v1::LabelSelector,
+		"strategy"?: DeploymentStrategy,
+		"template": core::v1::PodTemplateSpec
+	};
+	type DeploymentStatus = {
+		"availableReplicas"?: __cedar::Long,
+		"collisionCount"?: __cedar::Long,
+		"conditions"?: Set < DeploymentCondition >,
+		"observedGeneration"?: __cedar::Long,
+		"readyReplicas"?: __cedar::Long,
+		"replicas"?: __cedar::Long,
+		"unavailableReplicas"?: __cedar::Long,
+		"updatedReplicas"?: __cedar::Long
+	};
+	type DeploymentStrategy = {
+		"rollingUpdate"?: RollingUpdateDeployment,
+		"type"?: __cedar::String
+	};
+	type ReplicaSetCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status": __cedar::String,
+		"type": __cedar::String
+	};
+	type ReplicaSetSpec = {
+		"minReadySeconds"?: __cedar::Long,
+		"replicas"?: __cedar::Long,
+		"selector": meta::v1::LabelSelector,
+		"template"?: core::v1::PodTemplateSpec
+	};
+	type ReplicaSetStatus = {
+		"availableReplicas"?: __cedar::Long,
+		"conditions"?: Set < ReplicaSetCondition >,
+		"fullyLabeledReplicas"?: __cedar::Long,
+		"observedGeneration"?: __cedar::Long,
+		"readyReplicas"?: __cedar::Long,
+		"replicas": __cedar::Long
+	};
+	type RollingUpdateDaemonSet = {
+		"maxSurge"?: __cedar::String,
+		"maxUnavailable"?: __cedar::String
+	};
+	type RollingUpdateDeployment = {
+		"maxSurge"?: __cedar::String,
+		"maxUnavailable"?: __cedar::String
+	};
+	type RollingUpdateStatefulSetStrategy = {
+		"maxUnavailable"?: __cedar::String,
+		"partition"?: __cedar::Long
+	};
+	type StatefulSetCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status": __cedar::String,
+		"type": __cedar::String
+	};
+	type StatefulSetOrdinals = {
+		"start"?: __cedar::Long
+	};
+	type StatefulSetPersistentVolumeClaimRetentionPolicy = {
+		"whenDeleted"?: __cedar::String,
+		"whenScaled"?: __cedar::String
+	};
+	type StatefulSetSpec = {
+		"minReadySeconds"?: __cedar::Long,
+		"ordinals"?: StatefulSetOrdinals,
+		"persistentVolumeClaimRetentionPolicy"?: StatefulSetPersistentVolumeClaimRetentionPolicy,
+		"podManagementPolicy"?: __cedar::String,
+		"replicas"?: __cedar::Long,
+		"revisionHistoryLimit"?: __cedar::Long,
+		"selector": meta::v1::LabelSelector,
+		"serviceName": __cedar::String,
+		"template": core::v1::PodTemplateSpec,
+		"updateStrategy"?: StatefulSetUpdateStrategy,
+		"volumeClaimTemplates"?: Set < core::v1::PersistentVolumeClaim >
+	};
+	type StatefulSetStatus = {
+		"availableReplicas"?: __cedar::Long,
+		"collisionCount"?: __cedar::Long,
+		"conditions"?: Set < StatefulSetCondition >,
+		"currentReplicas"?: __cedar::Long,
+		"currentRevision"?: __cedar::String,
+		"observedGeneration"?: __cedar::Long,
+		"readyReplicas"?: __cedar::Long,
+		"replicas": __cedar::Long,
+		"updateRevision"?: __cedar::String,
+		"updatedReplicas"?: __cedar::Long
+	};
+	type StatefulSetUpdateStrategy = {
+		"rollingUpdate"?: RollingUpdateStatefulSetStrategy,
+		"type"?: __cedar::String
+	};
 	entity ControllerRevision = {
 		"apiVersion"?: __cedar::String,
 		"data"?: __cedar::String,
@@ -362,41 +500,11 @@ namespace apps::v1 {
 		"spec"?: DaemonSetSpec,
 		"status"?: DaemonSetStatus
 	};
-	entity DaemonSetCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status": __cedar::String,
-		"type": __cedar::String
-	};
 	entity DaemonSetList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < DaemonSet >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity DaemonSetSpec = {
-		"minReadySeconds"?: __cedar::Long,
-		"revisionHistoryLimit"?: __cedar::Long,
-		"selector": meta::v1::LabelSelector,
-		"template": core::v1::PodTemplateSpec,
-		"updateStrategy"?: DaemonSetUpdateStrategy
-	};
-	entity DaemonSetStatus = {
-		"collisionCount"?: __cedar::Long,
-		"conditions"?: Set < DaemonSetCondition >,
-		"currentNumberScheduled": __cedar::Long,
-		"desiredNumberScheduled": __cedar::Long,
-		"numberAvailable"?: __cedar::Long,
-		"numberMisscheduled": __cedar::Long,
-		"numberReady": __cedar::Long,
-		"numberUnavailable"?: __cedar::Long,
-		"observedGeneration"?: __cedar::Long,
-		"updatedNumberScheduled"?: __cedar::Long
-	};
-	entity DaemonSetUpdateStrategy = {
-		"rollingUpdate"?: RollingUpdateDaemonSet,
-		"type"?: __cedar::String
 	};
 	entity Deployment = {
 		"apiVersion"?: __cedar::String,
@@ -405,43 +513,11 @@ namespace apps::v1 {
 		"spec"?: DeploymentSpec,
 		"status"?: DeploymentStatus
 	};
-	entity DeploymentCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"lastUpdateTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status": __cedar::String,
-		"type": __cedar::String
-	};
 	entity DeploymentList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < Deployment >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity DeploymentSpec = {
-		"minReadySeconds"?: __cedar::Long,
-		"paused"?: __cedar::Bool,
-		"progressDeadlineSeconds"?: __cedar::Long,
-		"replicas"?: __cedar::Long,
-		"revisionHistoryLimit"?: __cedar::Long,
-		"selector": meta::v1::LabelSelector,
-		"strategy"?: DeploymentStrategy,
-		"template": core::v1::PodTemplateSpec
-	};
-	entity DeploymentStatus = {
-		"availableReplicas"?: __cedar::Long,
-		"collisionCount"?: __cedar::Long,
-		"conditions"?: Set < DeploymentCondition >,
-		"observedGeneration"?: __cedar::Long,
-		"readyReplicas"?: __cedar::Long,
-		"replicas"?: __cedar::Long,
-		"unavailableReplicas"?: __cedar::Long,
-		"updatedReplicas"?: __cedar::Long
-	};
-	entity DeploymentStrategy = {
-		"rollingUpdate"?: RollingUpdateDeployment,
-		"type"?: __cedar::String
 	};
 	entity ReplicaSet = {
 		"apiVersion"?: __cedar::String,
@@ -450,44 +526,11 @@ namespace apps::v1 {
 		"spec"?: ReplicaSetSpec,
 		"status"?: ReplicaSetStatus
 	};
-	entity ReplicaSetCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status": __cedar::String,
-		"type": __cedar::String
-	};
 	entity ReplicaSetList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < ReplicaSet >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity ReplicaSetSpec = {
-		"minReadySeconds"?: __cedar::Long,
-		"replicas"?: __cedar::Long,
-		"selector": meta::v1::LabelSelector,
-		"template"?: core::v1::PodTemplateSpec
-	};
-	entity ReplicaSetStatus = {
-		"availableReplicas"?: __cedar::Long,
-		"conditions"?: Set < ReplicaSetCondition >,
-		"fullyLabeledReplicas"?: __cedar::Long,
-		"observedGeneration"?: __cedar::Long,
-		"readyReplicas"?: __cedar::Long,
-		"replicas": __cedar::Long
-	};
-	entity RollingUpdateDaemonSet = {
-		"maxSurge"?: __cedar::String,
-		"maxUnavailable"?: __cedar::String
-	};
-	entity RollingUpdateDeployment = {
-		"maxSurge"?: __cedar::String,
-		"maxUnavailable"?: __cedar::String
-	};
-	entity RollingUpdateStatefulSetStrategy = {
-		"maxUnavailable"?: __cedar::String,
-		"partition"?: __cedar::Long
 	};
 	entity StatefulSet = {
 		"apiVersion"?: __cedar::String,
@@ -496,72 +539,54 @@ namespace apps::v1 {
 		"spec"?: StatefulSetSpec,
 		"status"?: StatefulSetStatus
 	};
-	entity StatefulSetCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status": __cedar::String,
-		"type": __cedar::String
-	};
 	entity StatefulSetList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < StatefulSet >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity StatefulSetOrdinals = {
-		"start"?: __cedar::Long
-	};
-	entity StatefulSetPersistentVolumeClaimRetentionPolicy = {
-		"whenDeleted"?: __cedar::String,
-		"whenScaled"?: __cedar::String
-	};
-	entity StatefulSetSpec = {
-		"minReadySeconds"?: __cedar::Long,
-		"ordinals"?: StatefulSetOrdinals,
-		"persistentVolumeClaimRetentionPolicy"?: StatefulSetPersistentVolumeClaimRetentionPolicy,
-		"podManagementPolicy"?: __cedar::String,
-		"replicas"?: __cedar::Long,
-		"revisionHistoryLimit"?: __cedar::Long,
-		"selector": meta::v1::LabelSelector,
-		"serviceName": __cedar::String,
-		"template": core::v1::PodTemplateSpec,
-		"updateStrategy"?: StatefulSetUpdateStrategy,
-		"volumeClaimTemplates"?: Set < core::v1::PersistentVolumeClaim >
-	};
-	entity StatefulSetStatus = {
-		"availableReplicas"?: __cedar::Long,
-		"collisionCount"?: __cedar::Long,
-		"conditions"?: Set < StatefulSetCondition >,
-		"currentReplicas"?: __cedar::Long,
-		"currentRevision"?: __cedar::String,
-		"observedGeneration"?: __cedar::Long,
-		"readyReplicas"?: __cedar::Long,
-		"replicas": __cedar::Long,
-		"updateRevision"?: __cedar::String,
-		"updatedReplicas"?: __cedar::Long
-	};
-	entity StatefulSetUpdateStrategy = {
-		"rollingUpdate"?: RollingUpdateStatefulSetStrategy,
-		"type"?: __cedar::String
-	};
 }
 
 namespace authentication::v1 {
-	entity BoundObjectReference = {
+	type BoundObjectReference = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
 		"name"?: __cedar::String,
 		"uid"?: __cedar::String
+	};
+	type SelfSubjectReviewStatus = {
+		"userInfo"?: UserInfo
+	};
+	type TokenRequestSpec = {
+		"audiences": Set < __cedar::String >,
+		"boundObjectRef"?: BoundObjectReference,
+		"expirationSeconds"?: __cedar::Long
+	};
+	type TokenRequestStatus = {
+		"expirationTimestamp": __cedar::String,
+		"token": __cedar::String
+	};
+	type TokenReviewSpec = {
+		"audiences"?: Set < __cedar::String >,
+		"token"?: __cedar::String
+	};
+	type TokenReviewStatus = {
+		"audiences"?: Set < __cedar::String >,
+		"authenticated"?: __cedar::Bool,
+		"error"?: __cedar::String,
+		"user"?: UserInfo
+	};
+	type UserInfo = {
+		"extra"?: Set < meta::v1::KeyValueStringSlice >,
+		"groups"?: Set < __cedar::String >,
+		"uid"?: __cedar::String,
+		"username"?: __cedar::String
 	};
 	entity SelfSubjectReview = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ObjectMeta,
 		"status"?: SelfSubjectReviewStatus
-	};
-	entity SelfSubjectReviewStatus = {
-		"userInfo"?: UserInfo
 	};
 	entity TokenRequest = {
 		"apiVersion"?: __cedar::String,
@@ -570,15 +595,6 @@ namespace authentication::v1 {
 		"spec": TokenRequestSpec,
 		"status"?: TokenRequestStatus
 	};
-	entity TokenRequestSpec = {
-		"audiences": Set < __cedar::String >,
-		"boundObjectRef"?: BoundObjectReference,
-		"expirationSeconds"?: __cedar::Long
-	};
-	entity TokenRequestStatus = {
-		"expirationTimestamp": __cedar::String,
-		"token": __cedar::String
-	};
 	entity TokenReview = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -586,49 +602,26 @@ namespace authentication::v1 {
 		"spec": TokenReviewSpec,
 		"status"?: TokenReviewStatus
 	};
-	entity TokenReviewSpec = {
-		"audiences"?: Set < __cedar::String >,
-		"token"?: __cedar::String
-	};
-	entity TokenReviewStatus = {
-		"audiences"?: Set < __cedar::String >,
-		"authenticated"?: __cedar::Bool,
-		"error"?: __cedar::String,
-		"user"?: UserInfo
-	};
-	entity UserInfo = {
-		"extra"?: Set < meta::v1::KeyValueStringSlice >,
-		"groups"?: Set < __cedar::String >,
-		"uid"?: __cedar::String,
-		"username"?: __cedar::String
-	};
 }
 
 namespace authorization::v1 {
-	entity FieldSelectorAttributes = {
+	type FieldSelectorAttributes = {
 		"rawSelector"?: __cedar::String,
 		"requirements"?: Set < meta::v1::FieldSelectorRequirement >
 	};
-	entity LabelSelectorAttributes = {
+	type LabelSelectorAttributes = {
 		"rawSelector"?: __cedar::String,
 		"requirements"?: Set < meta::v1::LabelSelectorRequirement >
 	};
-	entity LocalSubjectAccessReview = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec": SubjectAccessReviewSpec,
-		"status"?: SubjectAccessReviewStatus
-	};
-	entity NonResourceAttributes = {
+	type NonResourceAttributes = {
 		"path"?: __cedar::String,
 		"verb"?: __cedar::String
 	};
-	entity NonResourceRule = {
+	type NonResourceRule = {
 		"nonResourceURLs"?: Set < __cedar::String >,
 		"verbs": Set < __cedar::String >
 	};
-	entity ResourceAttributes = {
+	type ResourceAttributes = {
 		"fieldSelector"?: FieldSelectorAttributes,
 		"group"?: __cedar::String,
 		"labelSelector"?: LabelSelectorAttributes,
@@ -639,11 +632,45 @@ namespace authorization::v1 {
 		"verb"?: __cedar::String,
 		"version"?: __cedar::String
 	};
-	entity ResourceRule = {
+	type ResourceRule = {
 		"apiGroups"?: Set < __cedar::String >,
 		"resourceNames"?: Set < __cedar::String >,
 		"resources"?: Set < __cedar::String >,
 		"verbs": Set < __cedar::String >
+	};
+	type SelfSubjectAccessReviewSpec = {
+		"nonResourceAttributes"?: NonResourceAttributes,
+		"resourceAttributes"?: ResourceAttributes
+	};
+	type SelfSubjectRulesReviewSpec = {
+		"namespace"?: __cedar::String
+	};
+	type SubjectAccessReviewSpec = {
+		"extra"?: Set < meta::v1::KeyValueStringSlice >,
+		"groups"?: Set < __cedar::String >,
+		"nonResourceAttributes"?: NonResourceAttributes,
+		"resourceAttributes"?: ResourceAttributes,
+		"uid"?: __cedar::String,
+		"user"?: __cedar::String
+	};
+	type SubjectAccessReviewStatus = {
+		"allowed": __cedar::Bool,
+		"denied"?: __cedar::Bool,
+		"evaluationError"?: __cedar::String,
+		"reason"?: __cedar::String
+	};
+	type SubjectRulesReviewStatus = {
+		"evaluationError"?: __cedar::String,
+		"incomplete": __cedar::Bool,
+		"nonResourceRules": Set < NonResourceRule >,
+		"resourceRules": Set < ResourceRule >
+	};
+	entity LocalSubjectAccessReview = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec": SubjectAccessReviewSpec,
+		"status"?: SubjectAccessReviewStatus
 	};
 	entity SelfSubjectAccessReview = {
 		"apiVersion"?: __cedar::String,
@@ -652,19 +679,12 @@ namespace authorization::v1 {
 		"spec": SelfSubjectAccessReviewSpec,
 		"status"?: SubjectAccessReviewStatus
 	};
-	entity SelfSubjectAccessReviewSpec = {
-		"nonResourceAttributes"?: NonResourceAttributes,
-		"resourceAttributes"?: ResourceAttributes
-	};
 	entity SelfSubjectRulesReview = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ObjectMeta,
 		"spec": SelfSubjectRulesReviewSpec,
 		"status"?: SubjectRulesReviewStatus
-	};
-	entity SelfSubjectRulesReviewSpec = {
-		"namespace"?: __cedar::String
 	};
 	entity SubjectAccessReview = {
 		"apiVersion"?: __cedar::String,
@@ -673,33 +693,33 @@ namespace authorization::v1 {
 		"spec": SubjectAccessReviewSpec,
 		"status"?: SubjectAccessReviewStatus
 	};
-	entity SubjectAccessReviewSpec = {
-		"extra"?: Set < meta::v1::KeyValueStringSlice >,
-		"groups"?: Set < __cedar::String >,
-		"nonResourceAttributes"?: NonResourceAttributes,
-		"resourceAttributes"?: ResourceAttributes,
-		"uid"?: __cedar::String,
-		"user"?: __cedar::String
-	};
-	entity SubjectAccessReviewStatus = {
-		"allowed": __cedar::Bool,
-		"denied"?: __cedar::Bool,
-		"evaluationError"?: __cedar::String,
-		"reason"?: __cedar::String
-	};
-	entity SubjectRulesReviewStatus = {
-		"evaluationError"?: __cedar::String,
-		"incomplete": __cedar::Bool,
-		"nonResourceRules": Set < NonResourceRule >,
-		"resourceRules": Set < ResourceRule >
-	};
 }
 
 namespace autoscaling::v1 {
-	entity CrossVersionObjectReference = {
+	type CrossVersionObjectReference = {
 		"apiVersion"?: __cedar::String,
 		"kind": __cedar::String,
 		"name": __cedar::String
+	};
+	type HorizontalPodAutoscalerSpec = {
+		"maxReplicas": __cedar::Long,
+		"minReplicas"?: __cedar::Long,
+		"scaleTargetRef": CrossVersionObjectReference,
+		"targetCPUUtilizationPercentage"?: __cedar::Long
+	};
+	type HorizontalPodAutoscalerStatus = {
+		"currentCPUUtilizationPercentage"?: __cedar::Long,
+		"currentReplicas": __cedar::Long,
+		"desiredReplicas": __cedar::Long,
+		"lastScaleTime"?: __cedar::String,
+		"observedGeneration"?: __cedar::Long
+	};
+	type ScaleSpec = {
+		"replicas"?: __cedar::Long
+	};
+	type ScaleStatus = {
+		"replicas": __cedar::Long,
+		"selector"?: __cedar::String
 	};
 	entity HorizontalPodAutoscaler = {
 		"apiVersion"?: __cedar::String,
@@ -714,19 +734,6 @@ namespace autoscaling::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity HorizontalPodAutoscalerSpec = {
-		"maxReplicas": __cedar::Long,
-		"minReplicas"?: __cedar::Long,
-		"scaleTargetRef": CrossVersionObjectReference,
-		"targetCPUUtilizationPercentage"?: __cedar::Long
-	};
-	entity HorizontalPodAutoscalerStatus = {
-		"currentCPUUtilizationPercentage"?: __cedar::Long,
-		"currentReplicas": __cedar::Long,
-		"desiredReplicas": __cedar::Long,
-		"lastScaleTime"?: __cedar::String,
-		"observedGeneration"?: __cedar::Long
-	};
 	entity Scale = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -734,30 +741,10 @@ namespace autoscaling::v1 {
 		"spec"?: ScaleSpec,
 		"status"?: ScaleStatus
 	};
-	entity ScaleSpec = {
-		"replicas"?: __cedar::Long
-	};
-	entity ScaleStatus = {
-		"replicas": __cedar::Long,
-		"selector"?: __cedar::String
-	};
 }
 
 namespace batch::v1 {
-	entity CronJob = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: CronJobSpec,
-		"status"?: CronJobStatus
-	};
-	entity CronJobList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < CronJob >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity CronJobSpec = {
+	type CronJobSpec = {
 		"concurrencyPolicy"?: __cedar::String,
 		"failedJobsHistoryLimit"?: __cedar::Long,
 		"jobTemplate": JobTemplateSpec,
@@ -767,19 +754,12 @@ namespace batch::v1 {
 		"suspend"?: __cedar::Bool,
 		"timeZone"?: __cedar::String
 	};
-	entity CronJobStatus = {
+	type CronJobStatus = {
 		"active"?: Set < core::v1::ObjectReference >,
 		"lastScheduleTime"?: __cedar::String,
 		"lastSuccessfulTime"?: __cedar::String
 	};
-	entity Job = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: JobSpec,
-		"status"?: JobStatus
-	};
-	entity JobCondition = {
+	type JobCondition = {
 		"lastProbeTime"?: __cedar::String,
 		"lastTransitionTime"?: __cedar::String,
 		"message"?: __cedar::String,
@@ -787,13 +767,7 @@ namespace batch::v1 {
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity JobList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Job >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity JobSpec = {
+	type JobSpec = {
 		"activeDeadlineSeconds"?: __cedar::Long,
 		"backoffLimit"?: __cedar::Long,
 		"backoffLimitPerIndex"?: __cedar::Long,
@@ -811,7 +785,7 @@ namespace batch::v1 {
 		"template": core::v1::PodTemplateSpec,
 		"ttlSecondsAfterFinished"?: __cedar::Long
 	};
-	entity JobStatus = {
+	type JobStatus = {
 		"active"?: __cedar::Long,
 		"completedIndexes"?: __cedar::String,
 		"completionTime"?: __cedar::String,
@@ -824,49 +798,68 @@ namespace batch::v1 {
 		"terminating"?: __cedar::Long,
 		"uncountedTerminatedPods"?: UncountedTerminatedPods
 	};
-	entity JobTemplateSpec = {
+	type JobTemplateSpec = {
 		"metadata"?: meta::v1::ObjectMeta,
 		"spec"?: JobSpec
 	};
-	entity PodFailurePolicy = {
+	type PodFailurePolicy = {
 		"rules": Set < PodFailurePolicyRule >
 	};
-	entity PodFailurePolicyOnExitCodesRequirement = {
+	type PodFailurePolicyOnExitCodesRequirement = {
 		"containerName"?: __cedar::String,
 		"operator": __cedar::String,
 		"values": Set < __cedar::Long >
 	};
-	entity PodFailurePolicyOnPodConditionsPattern = {
+	type PodFailurePolicyOnPodConditionsPattern = {
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity PodFailurePolicyRule = {
+	type PodFailurePolicyRule = {
 		"action": __cedar::String,
 		"onExitCodes"?: PodFailurePolicyOnExitCodesRequirement,
 		"onPodConditions"?: Set < PodFailurePolicyOnPodConditionsPattern >
 	};
-	entity SuccessPolicy = {
+	type SuccessPolicy = {
 		"rules": Set < SuccessPolicyRule >
 	};
-	entity SuccessPolicyRule = {
+	type SuccessPolicyRule = {
 		"succeededCount"?: __cedar::Long,
 		"succeededIndexes"?: __cedar::String
 	};
-	entity UncountedTerminatedPods = {
+	type UncountedTerminatedPods = {
 		"failed"?: Set < __cedar::String >,
 		"succeeded"?: Set < __cedar::String >
+	};
+	entity CronJob = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: CronJobSpec,
+		"status"?: CronJobStatus
+	};
+	entity CronJobList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < CronJob >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Job = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: JobSpec,
+		"status"?: JobStatus
+	};
+	entity JobList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Job >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
 	};
 }
 
 namespace certificates::v1 {
-	entity CertificateSigningRequest = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec": CertificateSigningRequestSpec,
-		"status"?: CertificateSigningRequestStatus
-	};
-	entity CertificateSigningRequestCondition = {
+	type CertificateSigningRequestCondition = {
 		"lastTransitionTime"?: __cedar::String,
 		"lastUpdateTime"?: __cedar::String,
 		"message"?: __cedar::String,
@@ -874,13 +867,7 @@ namespace certificates::v1 {
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity CertificateSigningRequestList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < CertificateSigningRequest >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity CertificateSigningRequestSpec = {
+	type CertificateSigningRequestSpec = {
 		"expirationSeconds"?: __cedar::Long,
 		"extra"?: Set < meta::v1::KeyValueStringSlice >,
 		"groups"?: Set < __cedar::String >,
@@ -890,13 +877,35 @@ namespace certificates::v1 {
 		"usages"?: Set < __cedar::String >,
 		"username"?: __cedar::String
 	};
-	entity CertificateSigningRequestStatus = {
+	type CertificateSigningRequestStatus = {
 		"certificate"?: __cedar::String,
 		"conditions"?: Set < CertificateSigningRequestCondition >
+	};
+	entity CertificateSigningRequest = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec": CertificateSigningRequestSpec,
+		"status"?: CertificateSigningRequestStatus
+	};
+	entity CertificateSigningRequestList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < CertificateSigningRequest >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
 	};
 }
 
 namespace coordination::v1 {
+	type LeaseSpec = {
+		"acquireTime"?: __cedar::String,
+		"holderIdentity"?: __cedar::String,
+		"leaseDurationSeconds"?: __cedar::Long,
+		"leaseTransitions"?: __cedar::Long,
+		"preferredHolder"?: __cedar::String,
+		"renewTime"?: __cedar::String,
+		"strategy"?: __cedar::String
+	};
 	entity Lease = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -909,38 +918,29 @@ namespace coordination::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity LeaseSpec = {
-		"acquireTime"?: __cedar::String,
-		"holderIdentity"?: __cedar::String,
-		"leaseDurationSeconds"?: __cedar::Long,
-		"leaseTransitions"?: __cedar::Long,
-		"preferredHolder"?: __cedar::String,
-		"renewTime"?: __cedar::String,
-		"strategy"?: __cedar::String
-	};
 }
 
 namespace core::v1 {
-	entity AWSElasticBlockStoreVolumeSource = {
+	type AWSElasticBlockStoreVolumeSource = {
 		"fsType"?: __cedar::String,
 		"partition"?: __cedar::Long,
 		"readOnly"?: __cedar::Bool,
 		"volumeID": __cedar::String
 	};
-	entity Affinity = {
+	type Affinity = {
 		"nodeAffinity"?: NodeAffinity,
 		"podAffinity"?: PodAffinity,
 		"podAntiAffinity"?: PodAntiAffinity
 	};
-	entity AppArmorProfile = {
+	type AppArmorProfile = {
 		"localhostProfile"?: __cedar::String,
 		"type": __cedar::String
 	};
-	entity AttachedVolume = {
+	type AttachedVolume = {
 		"devicePath": __cedar::String,
 		"name": __cedar::String
 	};
-	entity AzureDiskVolumeSource = {
+	type AzureDiskVolumeSource = {
 		"cachingMode"?: __cedar::String,
 		"diskName": __cedar::String,
 		"diskURI": __cedar::String,
@@ -948,24 +948,18 @@ namespace core::v1 {
 		"kind"?: __cedar::String,
 		"readOnly"?: __cedar::Bool
 	};
-	entity AzureFilePersistentVolumeSource = {
+	type AzureFilePersistentVolumeSource = {
 		"readOnly"?: __cedar::Bool,
 		"secretName": __cedar::String,
 		"secretNamespace"?: __cedar::String,
 		"shareName": __cedar::String
 	};
-	entity AzureFileVolumeSource = {
+	type AzureFileVolumeSource = {
 		"readOnly"?: __cedar::Bool,
 		"secretName": __cedar::String,
 		"shareName": __cedar::String
 	};
-	entity Binding = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"target": ObjectReference
-	};
-	entity CSIPersistentVolumeSource = {
+	type CSIPersistentVolumeSource = {
 		"controllerExpandSecretRef"?: SecretReference,
 		"controllerPublishSecretRef"?: SecretReference,
 		"driver": __cedar::String,
@@ -977,18 +971,18 @@ namespace core::v1 {
 		"volumeAttributes"?: Set < meta::v1::KeyValue >,
 		"volumeHandle": __cedar::String
 	};
-	entity CSIVolumeSource = {
+	type CSIVolumeSource = {
 		"driver": __cedar::String,
 		"fsType"?: __cedar::String,
 		"nodePublishSecretRef"?: LocalObjectReference,
 		"readOnly"?: __cedar::Bool,
 		"volumeAttributes"?: Set < meta::v1::KeyValue >
 	};
-	entity Capabilities = {
+	type Capabilities = {
 		"add"?: Set < __cedar::String >,
 		"drop"?: Set < __cedar::String >
 	};
-	entity CephFSPersistentVolumeSource = {
+	type CephFSPersistentVolumeSource = {
 		"monitors": Set < __cedar::String >,
 		"path"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
@@ -996,7 +990,7 @@ namespace core::v1 {
 		"secretRef"?: SecretReference,
 		"user"?: __cedar::String
 	};
-	entity CephFSVolumeSource = {
+	type CephFSVolumeSource = {
 		"monitors": Set < __cedar::String >,
 		"path"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
@@ -1004,88 +998,62 @@ namespace core::v1 {
 		"secretRef"?: LocalObjectReference,
 		"user"?: __cedar::String
 	};
-	entity CinderPersistentVolumeSource = {
+	type CinderPersistentVolumeSource = {
 		"fsType"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"secretRef"?: SecretReference,
 		"volumeID": __cedar::String
 	};
-	entity CinderVolumeSource = {
+	type CinderVolumeSource = {
 		"fsType"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"secretRef"?: LocalObjectReference,
 		"volumeID": __cedar::String
 	};
-	entity ClientIPConfig = {
+	type ClientIPConfig = {
 		"timeoutSeconds"?: __cedar::Long
 	};
-	entity ClusterTrustBundleProjection = {
+	type ClusterTrustBundleProjection = {
 		"labelSelector"?: meta::v1::LabelSelector,
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool,
 		"path": __cedar::String,
 		"signerName"?: __cedar::String
 	};
-	entity ComponentCondition = {
+	type ComponentCondition = {
 		"error"?: __cedar::String,
 		"message"?: __cedar::String,
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity ComponentStatus = {
-		"apiVersion"?: __cedar::String,
-		"conditions"?: Set < ComponentCondition >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta
-	};
-	entity ComponentStatusList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < ComponentStatus >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity ConfigMap = {
-		"apiVersion"?: __cedar::String,
-		"binaryData"?: Set < meta::v1::KeyValue >,
-		"data"?: Set < meta::v1::KeyValue >,
-		"immutable"?: __cedar::Bool,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta
-	};
-	entity ConfigMapEnvSource = {
+	type ConfigMapEnvSource = {
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool
 	};
-	entity ConfigMapKeySelector = {
+	type ConfigMapKeySelector = {
 		"key": __cedar::String,
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool
 	};
-	entity ConfigMapList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < ConfigMap >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity ConfigMapNodeConfigSource = {
+	type ConfigMapNodeConfigSource = {
 		"kubeletConfigKey": __cedar::String,
 		"name": __cedar::String,
 		"namespace": __cedar::String,
 		"resourceVersion"?: __cedar::String,
 		"uid"?: __cedar::String
 	};
-	entity ConfigMapProjection = {
+	type ConfigMapProjection = {
 		"items"?: Set < KeyToPath >,
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool
 	};
-	entity ConfigMapVolumeSource = {
+	type ConfigMapVolumeSource = {
 		"defaultMode"?: __cedar::Long,
 		"items"?: Set < KeyToPath >,
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool
 	};
-	entity Container = {
+	type Container = {
 		"args"?: Set < __cedar::String >,
 		"command"?: Set < __cedar::String >,
 		"env"?: Set < EnvVar >,
@@ -1111,30 +1079,30 @@ namespace core::v1 {
 		"volumeMounts"?: Set < VolumeMount >,
 		"workingDir"?: __cedar::String
 	};
-	entity ContainerImage = {
+	type ContainerImage = {
 		"names"?: Set < __cedar::String >,
 		"sizeBytes"?: __cedar::Long
 	};
-	entity ContainerPort = {
+	type ContainerPort = {
 		"containerPort": __cedar::Long,
 		"hostIP"?: __cedar::String,
 		"hostPort"?: __cedar::Long,
 		"name"?: __cedar::String,
 		"protocol"?: __cedar::String
 	};
-	entity ContainerResizePolicy = {
+	type ContainerResizePolicy = {
 		"resourceName": __cedar::String,
 		"restartPolicy": __cedar::String
 	};
-	entity ContainerState = {
+	type ContainerState = {
 		"running"?: ContainerStateRunning,
 		"terminated"?: ContainerStateTerminated,
 		"waiting"?: ContainerStateWaiting
 	};
-	entity ContainerStateRunning = {
+	type ContainerStateRunning = {
 		"startedAt"?: __cedar::String
 	};
-	entity ContainerStateTerminated = {
+	type ContainerStateTerminated = {
 		"containerID"?: __cedar::String,
 		"exitCode": __cedar::Long,
 		"finishedAt"?: __cedar::String,
@@ -1143,11 +1111,11 @@ namespace core::v1 {
 		"signal"?: __cedar::Long,
 		"startedAt"?: __cedar::String
 	};
-	entity ContainerStateWaiting = {
+	type ContainerStateWaiting = {
 		"message"?: __cedar::String,
 		"reason"?: __cedar::String
 	};
-	entity ContainerStatus = {
+	type ContainerStatus = {
 		"allocatedResources"?: __cedar::String,
 		"allocatedResourcesStatus"?: Set < ResourceStatus >,
 		"containerID"?: __cedar::String,
@@ -1163,75 +1131,63 @@ namespace core::v1 {
 		"user"?: ContainerUser,
 		"volumeMounts"?: Set < VolumeMountStatus >
 	};
-	entity ContainerUser = {
+	type ContainerUser = {
 		"linux"?: LinuxContainerUser
 	};
-	entity DaemonEndpoint = {
+	type DaemonEndpoint = {
 		"Port": __cedar::Long
 	};
-	entity DownwardAPIProjection = {
+	type DownwardAPIProjection = {
 		"items"?: Set < DownwardAPIVolumeFile >
 	};
-	entity DownwardAPIVolumeFile = {
+	type DownwardAPIVolumeFile = {
 		"fieldRef"?: ObjectFieldSelector,
 		"mode"?: __cedar::Long,
 		"path": __cedar::String,
 		"resourceFieldRef"?: ResourceFieldSelector
 	};
-	entity DownwardAPIVolumeSource = {
+	type DownwardAPIVolumeSource = {
 		"defaultMode"?: __cedar::Long,
 		"items"?: Set < DownwardAPIVolumeFile >
 	};
-	entity EmptyDirVolumeSource = {
+	type EmptyDirVolumeSource = {
 		"medium"?: __cedar::String,
 		"sizeLimit"?: __cedar::String
 	};
-	entity EndpointAddress = {
+	type EndpointAddress = {
 		"hostname"?: __cedar::String,
 		"ip": __cedar::String,
 		"nodeName"?: __cedar::String,
 		"targetRef"?: ObjectReference
 	};
-	entity EndpointPort = {
+	type EndpointPort = {
 		"appProtocol"?: __cedar::String,
 		"name"?: __cedar::String,
 		"port": __cedar::Long,
 		"protocol"?: __cedar::String
 	};
-	entity EndpointSubset = {
+	type EndpointSubset = {
 		"addresses"?: Set < EndpointAddress >,
 		"notReadyAddresses"?: Set < EndpointAddress >,
 		"ports"?: Set < EndpointPort >
 	};
-	entity Endpoints = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"subsets"?: Set < EndpointSubset >
-	};
-	entity EndpointsList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Endpoints >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity EnvFromSource = {
+	type EnvFromSource = {
 		"configMapRef"?: ConfigMapEnvSource,
 		"prefix"?: __cedar::String,
 		"secretRef"?: SecretEnvSource
 	};
-	entity EnvVar = {
+	type EnvVar = {
 		"name": __cedar::String,
 		"value"?: __cedar::String,
 		"valueFrom"?: EnvVarSource
 	};
-	entity EnvVarSource = {
+	type EnvVarSource = {
 		"configMapKeyRef"?: ConfigMapKeySelector,
 		"fieldRef"?: ObjectFieldSelector,
 		"resourceFieldRef"?: ResourceFieldSelector,
 		"secretKeyRef"?: SecretKeySelector
 	};
-	entity EphemeralContainer = {
+	type EphemeralContainer = {
 		"args"?: Set < __cedar::String >,
 		"command"?: Set < __cedar::String >,
 		"env"?: Set < EnvVar >,
@@ -1258,119 +1214,94 @@ namespace core::v1 {
 		"volumeMounts"?: Set < VolumeMount >,
 		"workingDir"?: __cedar::String
 	};
-	entity EphemeralVolumeSource = {
+	type EphemeralVolumeSource = {
 		"volumeClaimTemplate"?: PersistentVolumeClaimTemplate
 	};
-	entity Event = {
-		"action"?: __cedar::String,
-		"apiVersion"?: __cedar::String,
-		"count"?: __cedar::Long,
-		"eventTime"?: __cedar::String,
-		"firstTimestamp"?: __cedar::String,
-		"involvedObject": ObjectReference,
-		"kind"?: __cedar::String,
-		"lastTimestamp"?: __cedar::String,
-		"message"?: __cedar::String,
-		"metadata": meta::v1::ObjectMeta,
-		"reason"?: __cedar::String,
-		"related"?: ObjectReference,
-		"reportingComponent"?: __cedar::String,
-		"reportingInstance"?: __cedar::String,
-		"series"?: EventSeries,
-		"source"?: EventSource,
-		"type"?: __cedar::String
-	};
-	entity EventList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Event >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity EventSeries = {
+	type EventSeries = {
 		"count"?: __cedar::Long,
 		"lastObservedTime"?: __cedar::String
 	};
-	entity EventSource = {
+	type EventSource = {
 		"component"?: __cedar::String,
 		"host"?: __cedar::String
 	};
-	entity ExecAction = {
+	type ExecAction = {
 		"command"?: Set < __cedar::String >
 	};
-	entity FCVolumeSource = {
+	type FCVolumeSource = {
 		"fsType"?: __cedar::String,
 		"lun"?: __cedar::Long,
 		"readOnly"?: __cedar::Bool,
 		"targetWWNs"?: Set < __cedar::String >,
 		"wwids"?: Set < __cedar::String >
 	};
-	entity FlexPersistentVolumeSource = {
+	type FlexPersistentVolumeSource = {
 		"driver": __cedar::String,
 		"fsType"?: __cedar::String,
 		"options"?: Set < meta::v1::KeyValue >,
 		"readOnly"?: __cedar::Bool,
 		"secretRef"?: SecretReference
 	};
-	entity FlexVolumeSource = {
+	type FlexVolumeSource = {
 		"driver": __cedar::String,
 		"fsType"?: __cedar::String,
 		"options"?: Set < meta::v1::KeyValue >,
 		"readOnly"?: __cedar::Bool,
 		"secretRef"?: LocalObjectReference
 	};
-	entity FlockerVolumeSource = {
+	type FlockerVolumeSource = {
 		"datasetName"?: __cedar::String,
 		"datasetUUID"?: __cedar::String
 	};
-	entity GCEPersistentDiskVolumeSource = {
+	type GCEPersistentDiskVolumeSource = {
 		"fsType"?: __cedar::String,
 		"partition"?: __cedar::Long,
 		"pdName": __cedar::String,
 		"readOnly"?: __cedar::Bool
 	};
-	entity GRPCAction = {
+	type GRPCAction = {
 		"port": __cedar::Long,
 		"service"?: __cedar::String
 	};
-	entity GitRepoVolumeSource = {
+	type GitRepoVolumeSource = {
 		"directory"?: __cedar::String,
 		"repository": __cedar::String,
 		"revision"?: __cedar::String
 	};
-	entity GlusterfsPersistentVolumeSource = {
+	type GlusterfsPersistentVolumeSource = {
 		"endpoints": __cedar::String,
 		"endpointsNamespace"?: __cedar::String,
 		"path": __cedar::String,
 		"readOnly"?: __cedar::Bool
 	};
-	entity GlusterfsVolumeSource = {
+	type GlusterfsVolumeSource = {
 		"endpoints": __cedar::String,
 		"path": __cedar::String,
 		"readOnly"?: __cedar::Bool
 	};
-	entity HTTPGetAction = {
+	type HTTPGetAction = {
 		"host"?: __cedar::String,
 		"httpHeaders"?: Set < HTTPHeader >,
 		"path"?: __cedar::String,
 		"port": __cedar::String,
 		"scheme"?: __cedar::String
 	};
-	entity HTTPHeader = {
+	type HTTPHeader = {
 		"name": __cedar::String,
 		"value": __cedar::String
 	};
-	entity HostAlias = {
+	type HostAlias = {
 		"hostnames"?: Set < __cedar::String >,
 		"ip": __cedar::String
 	};
-	entity HostIP = {
+	type HostIP = {
 		"ip": __cedar::String
 	};
-	entity HostPathVolumeSource = {
+	type HostPathVolumeSource = {
 		"path": __cedar::String,
 		"type"?: __cedar::String
 	};
-	entity ISCSIPersistentVolumeSource = {
+	type ISCSIPersistentVolumeSource = {
 		"chapAuthDiscovery"?: __cedar::Bool,
 		"chapAuthSession"?: __cedar::Bool,
 		"fsType"?: __cedar::String,
@@ -1383,7 +1314,7 @@ namespace core::v1 {
 		"secretRef"?: SecretReference,
 		"targetPortal": __cedar::String
 	};
-	entity ISCSIVolumeSource = {
+	type ISCSIVolumeSource = {
 		"chapAuthDiscovery"?: __cedar::Bool,
 		"chapAuthSession"?: __cedar::Bool,
 		"fsType"?: __cedar::String,
@@ -1396,32 +1327,26 @@ namespace core::v1 {
 		"secretRef"?: LocalObjectReference,
 		"targetPortal": __cedar::String
 	};
-	entity ImageVolumeSource = {
+	type ImageVolumeSource = {
 		"pullPolicy"?: __cedar::String,
 		"reference"?: __cedar::String
 	};
-	entity KeyToPath = {
+	type KeyToPath = {
 		"key": __cedar::String,
 		"mode"?: __cedar::Long,
 		"path": __cedar::String
 	};
-	entity Lifecycle = {
+	type Lifecycle = {
 		"postStart"?: LifecycleHandler,
 		"preStop"?: LifecycleHandler
 	};
-	entity LifecycleHandler = {
+	type LifecycleHandler = {
 		"exec"?: ExecAction,
 		"httpGet"?: HTTPGetAction,
 		"sleep"?: SleepAction,
 		"tcpSocket"?: TCPSocketAction
 	};
-	entity LimitRange = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: LimitRangeSpec
-	};
-	entity LimitRangeItem = {
+	type LimitRangeItem = {
 		"default"?: __cedar::String,
 		"defaultRequest"?: __cedar::String,
 		"max"?: __cedar::String,
@@ -1429,87 +1354,61 @@ namespace core::v1 {
 		"min"?: __cedar::String,
 		"type": __cedar::String
 	};
-	entity LimitRangeList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < LimitRange >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity LimitRangeSpec = {
+	type LimitRangeSpec = {
 		"limits": Set < LimitRangeItem >
 	};
-	entity LinuxContainerUser = {
+	type LinuxContainerUser = {
 		"gid": __cedar::Long,
 		"supplementalGroups"?: Set < __cedar::Long >,
 		"uid": __cedar::Long
 	};
-	entity LoadBalancerIngress = {
+	type LoadBalancerIngress = {
 		"hostname"?: __cedar::String,
 		"ip"?: __cedar::String,
 		"ipMode"?: __cedar::String,
 		"ports"?: Set < PortStatus >
 	};
-	entity LoadBalancerStatus = {
+	type LoadBalancerStatus = {
 		"ingress"?: Set < LoadBalancerIngress >
 	};
-	entity LocalObjectReference = {
+	type LocalObjectReference = {
 		"name"?: __cedar::String
 	};
-	entity LocalVolumeSource = {
+	type LocalVolumeSource = {
 		"fsType"?: __cedar::String,
 		"path": __cedar::String
 	};
-	entity ModifyVolumeStatus = {
+	type ModifyVolumeStatus = {
 		"status": __cedar::String,
 		"targetVolumeAttributesClassName"?: __cedar::String
 	};
-	entity NFSVolumeSource = {
+	type NFSVolumeSource = {
 		"path": __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"server": __cedar::String
 	};
-	entity Namespace = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: NamespaceSpec,
-		"status"?: NamespaceStatus
-	};
-	entity NamespaceCondition = {
+	type NamespaceCondition = {
 		"message"?: __cedar::String,
 		"reason"?: __cedar::String,
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity NamespaceList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Namespace >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity NamespaceSpec = {
+	type NamespaceSpec = {
 		"finalizers"?: Set < __cedar::String >
 	};
-	entity NamespaceStatus = {
+	type NamespaceStatus = {
 		"conditions"?: Set < NamespaceCondition >,
 		"phase"?: __cedar::String
 	};
-	entity Node = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: NodeSpec,
-		"status"?: NodeStatus
-	};
-	entity NodeAddress = {
+	type NodeAddress = {
 		"address": __cedar::String,
 		"type": __cedar::String
 	};
-	entity NodeAffinity = {
+	type NodeAffinity = {
 		"preferredDuringSchedulingIgnoredDuringExecution"?: Set < PreferredSchedulingTerm >,
 		"requiredDuringSchedulingIgnoredDuringExecution"?: NodeSelector
 	};
-	entity NodeCondition = {
+	type NodeCondition = {
 		"lastHeartbeatTime"?: __cedar::String,
 		"lastTransitionTime"?: __cedar::String,
 		"message"?: __cedar::String,
@@ -1517,48 +1416,42 @@ namespace core::v1 {
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity NodeConfigSource = {
+	type NodeConfigSource = {
 		"configMap"?: ConfigMapNodeConfigSource
 	};
-	entity NodeConfigStatus = {
+	type NodeConfigStatus = {
 		"active"?: NodeConfigSource,
 		"assigned"?: NodeConfigSource,
 		"error"?: __cedar::String,
 		"lastKnownGood"?: NodeConfigSource
 	};
-	entity NodeDaemonEndpoints = {
+	type NodeDaemonEndpoints = {
 		"kubeletEndpoint"?: DaemonEndpoint
 	};
-	entity NodeFeatures = {
+	type NodeFeatures = {
 		"supplementalGroupsPolicy"?: __cedar::Bool
 	};
-	entity NodeList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Node >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity NodeRuntimeHandler = {
+	type NodeRuntimeHandler = {
 		"features"?: NodeRuntimeHandlerFeatures,
 		"name"?: __cedar::String
 	};
-	entity NodeRuntimeHandlerFeatures = {
+	type NodeRuntimeHandlerFeatures = {
 		"recursiveReadOnlyMounts"?: __cedar::Bool,
 		"userNamespaces"?: __cedar::Bool
 	};
-	entity NodeSelector = {
+	type NodeSelector = {
 		"nodeSelectorTerms": Set < NodeSelectorTerm >
 	};
-	entity NodeSelectorRequirement = {
+	type NodeSelectorRequirement = {
 		"key": __cedar::String,
 		"operator": __cedar::String,
 		"values"?: Set < __cedar::String >
 	};
-	entity NodeSelectorTerm = {
+	type NodeSelectorTerm = {
 		"matchExpressions"?: Set < NodeSelectorRequirement >,
 		"matchFields"?: Set < NodeSelectorRequirement >
 	};
-	entity NodeSpec = {
+	type NodeSpec = {
 		"configSource"?: NodeConfigSource,
 		"externalID"?: __cedar::String,
 		"podCIDR"?: __cedar::String,
@@ -1567,7 +1460,7 @@ namespace core::v1 {
 		"taints"?: Set < Taint >,
 		"unschedulable"?: __cedar::Bool
 	};
-	entity NodeStatus = {
+	type NodeStatus = {
 		"addresses"?: Set < NodeAddress >,
 		"allocatable"?: __cedar::String,
 		"capacity"?: __cedar::String,
@@ -1582,7 +1475,7 @@ namespace core::v1 {
 		"volumesAttached"?: Set < AttachedVolume >,
 		"volumesInUse"?: Set < __cedar::String >
 	};
-	entity NodeSystemInfo = {
+	type NodeSystemInfo = {
 		"architecture": __cedar::String,
 		"bootID": __cedar::String,
 		"containerRuntimeVersion": __cedar::String,
@@ -1594,11 +1487,11 @@ namespace core::v1 {
 		"osImage": __cedar::String,
 		"systemUUID": __cedar::String
 	};
-	entity ObjectFieldSelector = {
+	type ObjectFieldSelector = {
 		"apiVersion"?: __cedar::String,
 		"fieldPath": __cedar::String
 	};
-	entity ObjectReference = {
+	type ObjectReference = {
 		"apiVersion"?: __cedar::String,
 		"fieldPath"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -1607,21 +1500,7 @@ namespace core::v1 {
 		"resourceVersion"?: __cedar::String,
 		"uid"?: __cedar::String
 	};
-	entity PersistentVolume = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: PersistentVolumeSpec,
-		"status"?: PersistentVolumeStatus
-	};
-	entity PersistentVolumeClaim = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: PersistentVolumeClaimSpec,
-		"status"?: PersistentVolumeClaimStatus
-	};
-	entity PersistentVolumeClaimCondition = {
+	type PersistentVolumeClaimCondition = {
 		"lastProbeTime"?: __cedar::String,
 		"lastTransitionTime"?: __cedar::String,
 		"message"?: __cedar::String,
@@ -1629,13 +1508,7 @@ namespace core::v1 {
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity PersistentVolumeClaimList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < PersistentVolumeClaim >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity PersistentVolumeClaimSpec = {
+	type PersistentVolumeClaimSpec = {
 		"accessModes"?: Set < __cedar::String >,
 		"dataSource"?: TypedLocalObjectReference,
 		"dataSourceRef"?: TypedObjectReference,
@@ -1646,7 +1519,7 @@ namespace core::v1 {
 		"volumeMode"?: __cedar::String,
 		"volumeName"?: __cedar::String
 	};
-	entity PersistentVolumeClaimStatus = {
+	type PersistentVolumeClaimStatus = {
 		"accessModes"?: Set < __cedar::String >,
 		"allocatedResourceStatuses"?: Set < meta::v1::KeyValue >,
 		"allocatedResources"?: __cedar::String,
@@ -1656,21 +1529,15 @@ namespace core::v1 {
 		"modifyVolumeStatus"?: ModifyVolumeStatus,
 		"phase"?: __cedar::String
 	};
-	entity PersistentVolumeClaimTemplate = {
+	type PersistentVolumeClaimTemplate = {
 		"metadata"?: meta::v1::ObjectMeta,
 		"spec": PersistentVolumeClaimSpec
 	};
-	entity PersistentVolumeClaimVolumeSource = {
+	type PersistentVolumeClaimVolumeSource = {
 		"claimName": __cedar::String,
 		"readOnly"?: __cedar::Bool
 	};
-	entity PersistentVolumeList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < PersistentVolume >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity PersistentVolumeSpec = {
+	type PersistentVolumeSpec = {
 		"accessModes"?: Set < __cedar::String >,
 		"awsElasticBlockStore"?: AWSElasticBlockStoreVolumeSource,
 		"azureDisk"?: AzureDiskVolumeSource,
@@ -1703,28 +1570,21 @@ namespace core::v1 {
 		"volumeMode"?: __cedar::String,
 		"vsphereVolume"?: VsphereVirtualDiskVolumeSource
 	};
-	entity PersistentVolumeStatus = {
+	type PersistentVolumeStatus = {
 		"lastPhaseTransitionTime"?: __cedar::String,
 		"message"?: __cedar::String,
 		"phase"?: __cedar::String,
 		"reason"?: __cedar::String
 	};
-	entity PhotonPersistentDiskVolumeSource = {
+	type PhotonPersistentDiskVolumeSource = {
 		"fsType"?: __cedar::String,
 		"pdID": __cedar::String
 	};
-	entity Pod = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: PodSpec,
-		"status"?: PodStatus
-	};
-	entity PodAffinity = {
+	type PodAffinity = {
 		"preferredDuringSchedulingIgnoredDuringExecution"?: Set < WeightedPodAffinityTerm >,
 		"requiredDuringSchedulingIgnoredDuringExecution"?: Set < PodAffinityTerm >
 	};
-	entity PodAffinityTerm = {
+	type PodAffinityTerm = {
 		"labelSelector"?: meta::v1::LabelSelector,
 		"matchLabelKeys"?: Set < __cedar::String >,
 		"mismatchLabelKeys"?: Set < __cedar::String >,
@@ -1732,11 +1592,11 @@ namespace core::v1 {
 		"namespaces"?: Set < __cedar::String >,
 		"topologyKey": __cedar::String
 	};
-	entity PodAntiAffinity = {
+	type PodAntiAffinity = {
 		"preferredDuringSchedulingIgnoredDuringExecution"?: Set < WeightedPodAffinityTerm >,
 		"requiredDuringSchedulingIgnoredDuringExecution"?: Set < PodAffinityTerm >
 	};
-	entity PodCondition = {
+	type PodCondition = {
 		"lastProbeTime"?: __cedar::String,
 		"lastTransitionTime"?: __cedar::String,
 		"message"?: __cedar::String,
@@ -1744,43 +1604,37 @@ namespace core::v1 {
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity PodDNSConfig = {
+	type PodDNSConfig = {
 		"nameservers"?: Set < __cedar::String >,
 		"options"?: Set < PodDNSConfigOption >,
 		"searches"?: Set < __cedar::String >
 	};
-	entity PodDNSConfigOption = {
+	type PodDNSConfigOption = {
 		"name"?: __cedar::String,
 		"value"?: __cedar::String
 	};
-	entity PodIP = {
+	type PodIP = {
 		"ip": __cedar::String
 	};
-	entity PodList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Pod >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity PodOS = {
+	type PodOS = {
 		"name": __cedar::String
 	};
-	entity PodReadinessGate = {
+	type PodReadinessGate = {
 		"conditionType": __cedar::String
 	};
-	entity PodResourceClaim = {
+	type PodResourceClaim = {
 		"name": __cedar::String,
 		"resourceClaimName"?: __cedar::String,
 		"resourceClaimTemplateName"?: __cedar::String
 	};
-	entity PodResourceClaimStatus = {
+	type PodResourceClaimStatus = {
 		"name": __cedar::String,
 		"resourceClaimName"?: __cedar::String
 	};
-	entity PodSchedulingGate = {
+	type PodSchedulingGate = {
 		"name": __cedar::String
 	};
-	entity PodSecurityContext = {
+	type PodSecurityContext = {
 		"appArmorProfile"?: AppArmorProfile,
 		"fsGroup"?: __cedar::Long,
 		"fsGroupChangePolicy"?: __cedar::String,
@@ -1794,7 +1648,7 @@ namespace core::v1 {
 		"sysctls"?: Set < Sysctl >,
 		"windowsOptions"?: WindowsSecurityContextOptions
 	};
-	entity PodSpec = {
+	type PodSpec = {
 		"activeDeadlineSeconds"?: __cedar::Long,
 		"affinity"?: Affinity,
 		"automountServiceAccountToken"?: __cedar::Bool,
@@ -1835,7 +1689,7 @@ namespace core::v1 {
 		"topologySpreadConstraints"?: Set < TopologySpreadConstraint >,
 		"volumes"?: Set < Volume >
 	};
-	entity PodStatus = {
+	type PodStatus = {
 		"conditions"?: Set < PodCondition >,
 		"containerStatuses"?: Set < ContainerStatus >,
 		"ephemeralContainerStatuses"?: Set < ContainerStatus >,
@@ -1853,37 +1707,25 @@ namespace core::v1 {
 		"resourceClaimStatuses"?: Set < PodResourceClaimStatus >,
 		"startTime"?: __cedar::String
 	};
-	entity PodTemplate = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"template"?: PodTemplateSpec
-	};
-	entity PodTemplateList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < PodTemplate >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity PodTemplateSpec = {
+	type PodTemplateSpec = {
 		"metadata"?: meta::v1::ObjectMeta,
 		"spec"?: PodSpec
 	};
-	entity PortStatus = {
+	type PortStatus = {
 		"error"?: __cedar::String,
 		"port": __cedar::Long,
 		"protocol": __cedar::String
 	};
-	entity PortworxVolumeSource = {
+	type PortworxVolumeSource = {
 		"fsType"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"volumeID": __cedar::String
 	};
-	entity PreferredSchedulingTerm = {
+	type PreferredSchedulingTerm = {
 		"preference": NodeSelectorTerm,
 		"weight": __cedar::Long
 	};
-	entity Probe = {
+	type Probe = {
 		"exec"?: ExecAction,
 		"failureThreshold"?: __cedar::Long,
 		"grpc"?: GRPCAction,
@@ -1895,11 +1737,11 @@ namespace core::v1 {
 		"terminationGracePeriodSeconds"?: __cedar::Long,
 		"timeoutSeconds"?: __cedar::Long
 	};
-	entity ProjectedVolumeSource = {
+	type ProjectedVolumeSource = {
 		"defaultMode"?: __cedar::Long,
 		"sources"?: Set < VolumeProjection >
 	};
-	entity QuobyteVolumeSource = {
+	type QuobyteVolumeSource = {
 		"group"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"registry": __cedar::String,
@@ -1907,7 +1749,7 @@ namespace core::v1 {
 		"user"?: __cedar::String,
 		"volume": __cedar::String
 	};
-	entity RBDPersistentVolumeSource = {
+	type RBDPersistentVolumeSource = {
 		"fsType"?: __cedar::String,
 		"image": __cedar::String,
 		"keyring"?: __cedar::String,
@@ -1917,7 +1759,7 @@ namespace core::v1 {
 		"secretRef"?: SecretReference,
 		"user"?: __cedar::String
 	};
-	entity RBDVolumeSource = {
+	type RBDVolumeSource = {
 		"fsType"?: __cedar::String,
 		"image": __cedar::String,
 		"keyring"?: __cedar::String,
@@ -1927,33 +1769,20 @@ namespace core::v1 {
 		"secretRef"?: LocalObjectReference,
 		"user"?: __cedar::String
 	};
-	entity ReplicationController = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: ReplicationControllerSpec,
-		"status"?: ReplicationControllerStatus
-	};
-	entity ReplicationControllerCondition = {
+	type ReplicationControllerCondition = {
 		"lastTransitionTime"?: __cedar::String,
 		"message"?: __cedar::String,
 		"reason"?: __cedar::String,
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity ReplicationControllerList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < ReplicationController >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity ReplicationControllerSpec = {
+	type ReplicationControllerSpec = {
 		"minReadySeconds"?: __cedar::Long,
 		"replicas"?: __cedar::Long,
 		"selector"?: Set < meta::v1::KeyValue >,
 		"template"?: PodTemplateSpec
 	};
-	entity ReplicationControllerStatus = {
+	type ReplicationControllerStatus = {
 		"availableReplicas"?: __cedar::Long,
 		"conditions"?: Set < ReplicationControllerCondition >,
 		"fullyLabeledReplicas"?: __cedar::Long,
@@ -1961,57 +1790,44 @@ namespace core::v1 {
 		"readyReplicas"?: __cedar::Long,
 		"replicas": __cedar::Long
 	};
-	entity ResourceClaim = {
+	type ResourceClaim = {
 		"name": __cedar::String,
 		"request"?: __cedar::String
 	};
-	entity ResourceFieldSelector = {
+	type ResourceFieldSelector = {
 		"containerName"?: __cedar::String,
 		"divisor"?: __cedar::String,
 		"resource": __cedar::String
 	};
-	entity ResourceHealth = {
+	type ResourceHealth = {
 		"health"?: __cedar::String,
 		"resourceID": __cedar::String
 	};
-	entity ResourceQuota = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: ResourceQuotaSpec,
-		"status"?: ResourceQuotaStatus
-	};
-	entity ResourceQuotaList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < ResourceQuota >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity ResourceQuotaSpec = {
+	type ResourceQuotaSpec = {
 		"hard"?: __cedar::String,
 		"scopeSelector"?: ScopeSelector,
 		"scopes"?: Set < __cedar::String >
 	};
-	entity ResourceQuotaStatus = {
+	type ResourceQuotaStatus = {
 		"hard"?: __cedar::String,
 		"used"?: __cedar::String
 	};
-	entity ResourceRequirements = {
+	type ResourceRequirements = {
 		"claims"?: Set < ResourceClaim >,
 		"limits"?: __cedar::String,
 		"requests"?: __cedar::String
 	};
-	entity ResourceStatus = {
+	type ResourceStatus = {
 		"name": __cedar::String,
 		"resources"?: Set < ResourceHealth >
 	};
-	entity SELinuxOptions = {
+	type SELinuxOptions = {
 		"level"?: __cedar::String,
 		"role"?: __cedar::String,
 		"type"?: __cedar::String,
 		"user"?: __cedar::String
 	};
-	entity ScaleIOPersistentVolumeSource = {
+	type ScaleIOPersistentVolumeSource = {
 		"fsType"?: __cedar::String,
 		"gateway": __cedar::String,
 		"protectionDomain"?: __cedar::String,
@@ -2023,7 +1839,7 @@ namespace core::v1 {
 		"system": __cedar::String,
 		"volumeName"?: __cedar::String
 	};
-	entity ScaleIOVolumeSource = {
+	type ScaleIOVolumeSource = {
 		"fsType"?: __cedar::String,
 		"gateway": __cedar::String,
 		"protectionDomain"?: __cedar::String,
@@ -2035,58 +1851,43 @@ namespace core::v1 {
 		"system": __cedar::String,
 		"volumeName"?: __cedar::String
 	};
-	entity ScopeSelector = {
+	type ScopeSelector = {
 		"matchExpressions"?: Set < ScopedResourceSelectorRequirement >
 	};
-	entity ScopedResourceSelectorRequirement = {
+	type ScopedResourceSelectorRequirement = {
 		"operator": __cedar::String,
 		"scopeName": __cedar::String,
 		"values"?: Set < __cedar::String >
 	};
-	entity SeccompProfile = {
+	type SeccompProfile = {
 		"localhostProfile"?: __cedar::String,
 		"type": __cedar::String
 	};
-	entity Secret = {
-		"apiVersion"?: __cedar::String,
-		"data"?: Set < meta::v1::KeyValue >,
-		"immutable"?: __cedar::Bool,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"stringData"?: Set < meta::v1::KeyValue >,
-		"type"?: __cedar::String
-	};
-	entity SecretEnvSource = {
+	type SecretEnvSource = {
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool
 	};
-	entity SecretKeySelector = {
+	type SecretKeySelector = {
 		"key": __cedar::String,
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool
 	};
-	entity SecretList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Secret >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity SecretProjection = {
+	type SecretProjection = {
 		"items"?: Set < KeyToPath >,
 		"name"?: __cedar::String,
 		"optional"?: __cedar::Bool
 	};
-	entity SecretReference = {
+	type SecretReference = {
 		"name"?: __cedar::String,
 		"namespace"?: __cedar::String
 	};
-	entity SecretVolumeSource = {
+	type SecretVolumeSource = {
 		"defaultMode"?: __cedar::Long,
 		"items"?: Set < KeyToPath >,
 		"optional"?: __cedar::Bool,
 		"secretName"?: __cedar::String
 	};
-	entity SecurityContext = {
+	type SecurityContext = {
 		"allowPrivilegeEscalation"?: __cedar::Bool,
 		"appArmorProfile"?: AppArmorProfile,
 		"capabilities"?: Capabilities,
@@ -2100,39 +1901,12 @@ namespace core::v1 {
 		"seccompProfile"?: SeccompProfile,
 		"windowsOptions"?: WindowsSecurityContextOptions
 	};
-	entity Service = {
-		"apiVersion"?: __cedar::String,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"spec"?: ServiceSpec,
-		"status"?: ServiceStatus
-	};
-	entity ServiceAccount = {
-		"apiVersion"?: __cedar::String,
-		"automountServiceAccountToken"?: __cedar::Bool,
-		"imagePullSecrets"?: Set < LocalObjectReference >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ObjectMeta,
-		"secrets"?: Set < ObjectReference >
-	};
-	entity ServiceAccountList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < ServiceAccount >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity ServiceAccountTokenProjection = {
+	type ServiceAccountTokenProjection = {
 		"audience"?: __cedar::String,
 		"expirationSeconds"?: __cedar::Long,
 		"path": __cedar::String
 	};
-	entity ServiceList = {
-		"apiVersion"?: __cedar::String,
-		"items": Set < Service >,
-		"kind"?: __cedar::String,
-		"metadata"?: meta::v1::ListMeta
-	};
-	entity ServicePort = {
+	type ServicePort = {
 		"appProtocol"?: __cedar::String,
 		"name"?: __cedar::String,
 		"nodePort"?: __cedar::Long,
@@ -2140,7 +1914,7 @@ namespace core::v1 {
 		"protocol"?: __cedar::String,
 		"targetPort"?: __cedar::String
 	};
-	entity ServiceSpec = {
+	type ServiceSpec = {
 		"allocateLoadBalancerNodePorts"?: __cedar::Bool,
 		"clusterIP"?: __cedar::String,
 		"clusterIPs"?: Set < __cedar::String >,
@@ -2162,59 +1936,59 @@ namespace core::v1 {
 		"trafficDistribution"?: __cedar::String,
 		"type"?: __cedar::String
 	};
-	entity ServiceStatus = {
+	type ServiceStatus = {
 		"conditions"?: Set < meta::v1::Condition >,
 		"loadBalancer"?: LoadBalancerStatus
 	};
-	entity SessionAffinityConfig = {
+	type SessionAffinityConfig = {
 		"clientIP"?: ClientIPConfig
 	};
-	entity SleepAction = {
+	type SleepAction = {
 		"seconds": __cedar::Long
 	};
-	entity StorageOSPersistentVolumeSource = {
+	type StorageOSPersistentVolumeSource = {
 		"fsType"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"secretRef"?: ObjectReference,
 		"volumeName"?: __cedar::String,
 		"volumeNamespace"?: __cedar::String
 	};
-	entity StorageOSVolumeSource = {
+	type StorageOSVolumeSource = {
 		"fsType"?: __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"secretRef"?: LocalObjectReference,
 		"volumeName"?: __cedar::String,
 		"volumeNamespace"?: __cedar::String
 	};
-	entity Sysctl = {
+	type Sysctl = {
 		"name": __cedar::String,
 		"value": __cedar::String
 	};
-	entity TCPSocketAction = {
+	type TCPSocketAction = {
 		"host"?: __cedar::String,
 		"port": __cedar::String
 	};
-	entity Taint = {
+	type Taint = {
 		"effect": __cedar::String,
 		"key": __cedar::String,
 		"timeAdded"?: __cedar::String,
 		"value"?: __cedar::String
 	};
-	entity Toleration = {
+	type Toleration = {
 		"effect"?: __cedar::String,
 		"key"?: __cedar::String,
 		"operator"?: __cedar::String,
 		"tolerationSeconds"?: __cedar::Long,
 		"value"?: __cedar::String
 	};
-	entity TopologySelectorLabelRequirement = {
+	type TopologySelectorLabelRequirement = {
 		"key": __cedar::String,
 		"values": Set < __cedar::String >
 	};
-	entity TopologySelectorTerm = {
+	type TopologySelectorTerm = {
 		"matchLabelExpressions"?: Set < TopologySelectorLabelRequirement >
 	};
-	entity TopologySpreadConstraint = {
+	type TopologySpreadConstraint = {
 		"labelSelector"?: meta::v1::LabelSelector,
 		"matchLabelKeys"?: Set < __cedar::String >,
 		"maxSkew": __cedar::Long,
@@ -2224,18 +1998,18 @@ namespace core::v1 {
 		"topologyKey": __cedar::String,
 		"whenUnsatisfiable": __cedar::String
 	};
-	entity TypedLocalObjectReference = {
+	type TypedLocalObjectReference = {
 		"apiGroup"?: __cedar::String,
 		"kind": __cedar::String,
 		"name": __cedar::String
 	};
-	entity TypedObjectReference = {
+	type TypedObjectReference = {
 		"apiGroup"?: __cedar::String,
 		"kind": __cedar::String,
 		"name": __cedar::String,
 		"namespace"?: __cedar::String
 	};
-	entity Volume = {
+	type Volume = {
 		"awsElasticBlockStore"?: AWSElasticBlockStoreVolumeSource,
 		"azureDisk"?: AzureDiskVolumeSource,
 		"azureFile"?: AzureFileVolumeSource,
@@ -2268,11 +2042,11 @@ namespace core::v1 {
 		"storageos"?: StorageOSVolumeSource,
 		"vsphereVolume"?: VsphereVirtualDiskVolumeSource
 	};
-	entity VolumeDevice = {
+	type VolumeDevice = {
 		"devicePath": __cedar::String,
 		"name": __cedar::String
 	};
-	entity VolumeMount = {
+	type VolumeMount = {
 		"mountPath": __cedar::String,
 		"mountPropagation"?: __cedar::String,
 		"name": __cedar::String,
@@ -2281,46 +2055,272 @@ namespace core::v1 {
 		"subPath"?: __cedar::String,
 		"subPathExpr"?: __cedar::String
 	};
-	entity VolumeMountStatus = {
+	type VolumeMountStatus = {
 		"mountPath": __cedar::String,
 		"name": __cedar::String,
 		"readOnly"?: __cedar::Bool,
 		"recursiveReadOnly"?: __cedar::String
 	};
-	entity VolumeNodeAffinity = {
+	type VolumeNodeAffinity = {
 		"required"?: NodeSelector
 	};
-	entity VolumeProjection = {
+	type VolumeProjection = {
 		"clusterTrustBundle"?: ClusterTrustBundleProjection,
 		"configMap"?: ConfigMapProjection,
 		"downwardAPI"?: DownwardAPIProjection,
 		"secret"?: SecretProjection,
 		"serviceAccountToken"?: ServiceAccountTokenProjection
 	};
-	entity VolumeResourceRequirements = {
+	type VolumeResourceRequirements = {
 		"limits"?: __cedar::String,
 		"requests"?: __cedar::String
 	};
-	entity VsphereVirtualDiskVolumeSource = {
+	type VsphereVirtualDiskVolumeSource = {
 		"fsType"?: __cedar::String,
 		"storagePolicyID"?: __cedar::String,
 		"storagePolicyName"?: __cedar::String,
 		"volumePath": __cedar::String
 	};
-	entity WeightedPodAffinityTerm = {
+	type WeightedPodAffinityTerm = {
 		"podAffinityTerm": PodAffinityTerm,
 		"weight": __cedar::Long
 	};
-	entity WindowsSecurityContextOptions = {
+	type WindowsSecurityContextOptions = {
 		"gmsaCredentialSpec"?: __cedar::String,
 		"gmsaCredentialSpecName"?: __cedar::String,
 		"hostProcess"?: __cedar::Bool,
 		"runAsUserName"?: __cedar::String
 	};
+	entity Binding = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"target": ObjectReference
+	};
+	entity ComponentStatus = {
+		"apiVersion"?: __cedar::String,
+		"conditions"?: Set < ComponentCondition >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta
+	};
+	entity ComponentStatusList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < ComponentStatus >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity ConfigMap = {
+		"apiVersion"?: __cedar::String,
+		"binaryData"?: Set < meta::v1::KeyValue >,
+		"data"?: Set < meta::v1::KeyValue >,
+		"immutable"?: __cedar::Bool,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta
+	};
+	entity ConfigMapList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < ConfigMap >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Endpoints = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"subsets"?: Set < EndpointSubset >
+	};
+	entity EndpointsList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Endpoints >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Event = {
+		"action"?: __cedar::String,
+		"apiVersion"?: __cedar::String,
+		"count"?: __cedar::Long,
+		"eventTime"?: __cedar::String,
+		"firstTimestamp"?: __cedar::String,
+		"involvedObject": ObjectReference,
+		"kind"?: __cedar::String,
+		"lastTimestamp"?: __cedar::String,
+		"message"?: __cedar::String,
+		"metadata": meta::v1::ObjectMeta,
+		"reason"?: __cedar::String,
+		"related"?: ObjectReference,
+		"reportingComponent"?: __cedar::String,
+		"reportingInstance"?: __cedar::String,
+		"series"?: EventSeries,
+		"source"?: EventSource,
+		"type"?: __cedar::String
+	};
+	entity EventList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Event >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity LimitRange = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: LimitRangeSpec
+	};
+	entity LimitRangeList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < LimitRange >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Namespace = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: NamespaceSpec,
+		"status"?: NamespaceStatus
+	};
+	entity NamespaceList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Namespace >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Node = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: NodeSpec,
+		"status"?: NodeStatus
+	};
+	entity NodeList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Node >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity PersistentVolume = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: PersistentVolumeSpec,
+		"status"?: PersistentVolumeStatus
+	};
+	entity PersistentVolumeClaim = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: PersistentVolumeClaimSpec,
+		"status"?: PersistentVolumeClaimStatus
+	};
+	entity PersistentVolumeClaimList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < PersistentVolumeClaim >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity PersistentVolumeList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < PersistentVolume >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Pod = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: PodSpec,
+		"status"?: PodStatus
+	};
+	entity PodList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Pod >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity PodTemplate = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"template"?: PodTemplateSpec
+	};
+	entity PodTemplateList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < PodTemplate >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity ReplicationController = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: ReplicationControllerSpec,
+		"status"?: ReplicationControllerStatus
+	};
+	entity ReplicationControllerList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < ReplicationController >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity ResourceQuota = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: ResourceQuotaSpec,
+		"status"?: ResourceQuotaStatus
+	};
+	entity ResourceQuotaList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < ResourceQuota >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Secret = {
+		"apiVersion"?: __cedar::String,
+		"data"?: Set < meta::v1::KeyValue >,
+		"immutable"?: __cedar::Bool,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"stringData"?: Set < meta::v1::KeyValue >,
+		"type"?: __cedar::String
+	};
+	entity SecretList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Secret >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity Service = {
+		"apiVersion"?: __cedar::String,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"spec"?: ServiceSpec,
+		"status"?: ServiceStatus
+	};
+	entity ServiceAccount = {
+		"apiVersion"?: __cedar::String,
+		"automountServiceAccountToken"?: __cedar::Bool,
+		"imagePullSecrets"?: Set < LocalObjectReference >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ObjectMeta,
+		"secrets"?: Set < ObjectReference >
+	};
+	entity ServiceAccountList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < ServiceAccount >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
+	entity ServiceList = {
+		"apiVersion"?: __cedar::String,
+		"items": Set < Service >,
+		"kind"?: __cedar::String,
+		"metadata"?: meta::v1::ListMeta
+	};
 }
 
 namespace discovery::v1 {
-	entity Endpoint = {
+	type Endpoint = {
 		"addresses": Set < __cedar::String >,
 		"conditions"?: EndpointConditions,
 		"deprecatedTopology"?: Set < meta::v1::KeyValue >,
@@ -2330,19 +2330,22 @@ namespace discovery::v1 {
 		"targetRef"?: core::v1::ObjectReference,
 		"zone"?: __cedar::String
 	};
-	entity EndpointConditions = {
+	type EndpointConditions = {
 		"ready"?: __cedar::Bool,
 		"serving"?: __cedar::Bool,
 		"terminating"?: __cedar::Bool
 	};
-	entity EndpointHints = {
+	type EndpointHints = {
 		"forZones"?: Set < ForZone >
 	};
-	entity EndpointPort = {
+	type EndpointPort = {
 		"appProtocol"?: __cedar::String,
 		"name"?: __cedar::String,
 		"port"?: __cedar::Long,
 		"protocol"?: __cedar::String
+	};
+	type ForZone = {
+		"name": __cedar::String
 	};
 	entity EndpointSlice = {
 		"addressType": __cedar::String,
@@ -2358,12 +2361,13 @@ namespace discovery::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity ForZone = {
-		"name": __cedar::String
-	};
 }
 
 namespace events::v1 {
+	type EventSeries = {
+		"count": __cedar::Long,
+		"lastObservedTime": __cedar::String
+	};
 	entity Event = {
 		"action"?: __cedar::String,
 		"apiVersion"?: __cedar::String,
@@ -2389,19 +2393,96 @@ namespace events::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity EventSeries = {
-		"count": __cedar::Long,
-		"lastObservedTime": __cedar::String
-	};
 }
 
 namespace flowcontrol::v1 {
-	entity ExemptPriorityLevelConfiguration = {
+	type ExemptPriorityLevelConfiguration = {
 		"lendablePercent"?: __cedar::Long,
 		"nominalConcurrencyShares"?: __cedar::Long
 	};
-	entity FlowDistinguisherMethod = {
+	type FlowDistinguisherMethod = {
 		"type": __cedar::String
+	};
+	type FlowSchemaCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status"?: __cedar::String,
+		"type"?: __cedar::String
+	};
+	type FlowSchemaSpec = {
+		"distinguisherMethod"?: FlowDistinguisherMethod,
+		"matchingPrecedence"?: __cedar::Long,
+		"priorityLevelConfiguration": PriorityLevelConfigurationReference,
+		"rules"?: Set < PolicyRulesWithSubjects >
+	};
+	type FlowSchemaStatus = {
+		"conditions"?: Set < FlowSchemaCondition >
+	};
+	type GroupSubject = {
+		"name": __cedar::String
+	};
+	type LimitResponse = {
+		"queuing"?: QueuingConfiguration,
+		"type": __cedar::String
+	};
+	type LimitedPriorityLevelConfiguration = {
+		"borrowingLimitPercent"?: __cedar::Long,
+		"lendablePercent"?: __cedar::Long,
+		"limitResponse"?: LimitResponse,
+		"nominalConcurrencyShares"?: __cedar::Long
+	};
+	type NonResourcePolicyRule = {
+		"nonResourceURLs": Set < __cedar::String >,
+		"verbs": Set < __cedar::String >
+	};
+	type PolicyRulesWithSubjects = {
+		"nonResourceRules"?: Set < NonResourcePolicyRule >,
+		"resourceRules"?: Set < ResourcePolicyRule >,
+		"subjects": Set < Subject >
+	};
+	type PriorityLevelConfigurationCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status"?: __cedar::String,
+		"type"?: __cedar::String
+	};
+	type PriorityLevelConfigurationReference = {
+		"name": __cedar::String
+	};
+	type PriorityLevelConfigurationSpec = {
+		"exempt"?: ExemptPriorityLevelConfiguration,
+		"limited"?: LimitedPriorityLevelConfiguration,
+		"type": __cedar::String
+	};
+	type PriorityLevelConfigurationStatus = {
+		"conditions"?: Set < PriorityLevelConfigurationCondition >
+	};
+	type QueuingConfiguration = {
+		"handSize"?: __cedar::Long,
+		"queueLengthLimit"?: __cedar::Long,
+		"queues"?: __cedar::Long
+	};
+	type ResourcePolicyRule = {
+		"apiGroups": Set < __cedar::String >,
+		"clusterScope"?: __cedar::Bool,
+		"namespaces"?: Set < __cedar::String >,
+		"resources": Set < __cedar::String >,
+		"verbs": Set < __cedar::String >
+	};
+	type ServiceAccountSubject = {
+		"name": __cedar::String,
+		"namespace": __cedar::String
+	};
+	type Subject = {
+		"group"?: GroupSubject,
+		"kind": __cedar::String,
+		"serviceAccount"?: ServiceAccountSubject,
+		"user"?: UserSubject
+	};
+	type UserSubject = {
+		"name": __cedar::String
 	};
 	entity FlowSchema = {
 		"apiVersion"?: __cedar::String,
@@ -2410,49 +2491,11 @@ namespace flowcontrol::v1 {
 		"spec"?: FlowSchemaSpec,
 		"status"?: FlowSchemaStatus
 	};
-	entity FlowSchemaCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status"?: __cedar::String,
-		"type"?: __cedar::String
-	};
 	entity FlowSchemaList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < FlowSchema >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity FlowSchemaSpec = {
-		"distinguisherMethod"?: FlowDistinguisherMethod,
-		"matchingPrecedence"?: __cedar::Long,
-		"priorityLevelConfiguration": PriorityLevelConfigurationReference,
-		"rules"?: Set < PolicyRulesWithSubjects >
-	};
-	entity FlowSchemaStatus = {
-		"conditions"?: Set < FlowSchemaCondition >
-	};
-	entity GroupSubject = {
-		"name": __cedar::String
-	};
-	entity LimitResponse = {
-		"queuing"?: QueuingConfiguration,
-		"type": __cedar::String
-	};
-	entity LimitedPriorityLevelConfiguration = {
-		"borrowingLimitPercent"?: __cedar::Long,
-		"lendablePercent"?: __cedar::Long,
-		"limitResponse"?: LimitResponse,
-		"nominalConcurrencyShares"?: __cedar::Long
-	};
-	entity NonResourcePolicyRule = {
-		"nonResourceURLs": Set < __cedar::String >,
-		"verbs": Set < __cedar::String >
-	};
-	entity PolicyRulesWithSubjects = {
-		"nonResourceRules"?: Set < NonResourcePolicyRule >,
-		"resourceRules"?: Set < ResourcePolicyRule >,
-		"subjects": Set < Subject >
 	};
 	entity PriorityLevelConfiguration = {
 		"apiVersion"?: __cedar::String,
@@ -2461,67 +2504,16 @@ namespace flowcontrol::v1 {
 		"spec"?: PriorityLevelConfigurationSpec,
 		"status"?: PriorityLevelConfigurationStatus
 	};
-	entity PriorityLevelConfigurationCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status"?: __cedar::String,
-		"type"?: __cedar::String
-	};
 	entity PriorityLevelConfigurationList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < PriorityLevelConfiguration >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity PriorityLevelConfigurationReference = {
-		"name": __cedar::String
-	};
-	entity PriorityLevelConfigurationSpec = {
-		"exempt"?: ExemptPriorityLevelConfiguration,
-		"limited"?: LimitedPriorityLevelConfiguration,
-		"type": __cedar::String
-	};
-	entity PriorityLevelConfigurationStatus = {
-		"conditions"?: Set < PriorityLevelConfigurationCondition >
-	};
-	entity QueuingConfiguration = {
-		"handSize"?: __cedar::Long,
-		"queueLengthLimit"?: __cedar::Long,
-		"queues"?: __cedar::Long
-	};
-	entity ResourcePolicyRule = {
-		"apiGroups": Set < __cedar::String >,
-		"clusterScope"?: __cedar::Bool,
-		"namespaces"?: Set < __cedar::String >,
-		"resources": Set < __cedar::String >,
-		"verbs": Set < __cedar::String >
-	};
-	entity ServiceAccountSubject = {
-		"name": __cedar::String,
-		"namespace": __cedar::String
-	};
-	entity Subject = {
-		"group"?: GroupSubject,
-		"kind": __cedar::String,
-		"serviceAccount"?: ServiceAccountSubject,
-		"user"?: UserSubject
-	};
-	entity UserSubject = {
-		"name": __cedar::String
-	};
 }
 
 namespace meta::v1 {
-	type KeyValue = {
-		"key": __cedar::String,
-		"value"?: __cedar::String
-	};
-	type KeyValueStringSlice = {
-		"key": __cedar::String,
-		"value"?: Set < __cedar::String >
-	};
-	entity APIResource = {
+	type APIResource = {
 		"categories"?: Set < __cedar::String >,
 		"group"?: __cedar::String,
 		"kind": __cedar::String,
@@ -2533,13 +2525,13 @@ namespace meta::v1 {
 		"verbs": Set < __cedar::String >,
 		"version"?: __cedar::String
 	};
-	entity APIResourceList = {
+	type APIResourceList = {
 		"apiVersion"?: __cedar::String,
 		"groupVersion": __cedar::String,
 		"kind"?: __cedar::String,
 		"resources": Set < APIResource >
 	};
-	entity Condition = {
+	type Condition = {
 		"lastTransitionTime": __cedar::String,
 		"message": __cedar::String,
 		"observedGeneration"?: __cedar::Long,
@@ -2547,7 +2539,7 @@ namespace meta::v1 {
 		"status": __cedar::String,
 		"type": __cedar::String
 	};
-	entity DeleteOptions = {
+	type DeleteOptions = {
 		"apiVersion"?: __cedar::String,
 		"dryRun"?: Set < __cedar::String >,
 		"gracePeriodSeconds"?: __cedar::Long,
@@ -2556,28 +2548,36 @@ namespace meta::v1 {
 		"preconditions"?: Preconditions,
 		"propagationPolicy"?: __cedar::String
 	};
-	entity FieldSelectorRequirement = {
+	type FieldSelectorRequirement = {
 		"key": __cedar::String,
 		"operator": __cedar::String,
 		"values"?: Set < __cedar::String >
 	};
-	entity FieldsV1;
-	entity LabelSelector = {
+type FieldsV1 = {};
+	type KeyValue = {
+		"key": __cedar::String,
+		"value"?: __cedar::String
+	};
+	type KeyValueStringSlice = {
+		"key": __cedar::String,
+		"value"?: Set < __cedar::String >
+	};
+	type LabelSelector = {
 		"matchExpressions"?: Set < LabelSelectorRequirement >,
 		"matchLabels"?: Set < meta::v1::KeyValue >
 	};
-	entity LabelSelectorRequirement = {
+	type LabelSelectorRequirement = {
 		"key": __cedar::String,
 		"operator": __cedar::String,
 		"values"?: Set < __cedar::String >
 	};
-	entity ListMeta = {
+	type ListMeta = {
 		"continue"?: __cedar::String,
 		"remainingItemCount"?: __cedar::Long,
 		"resourceVersion"?: __cedar::String,
 		"selfLink"?: __cedar::String
 	};
-	entity ManagedFieldsEntry = {
+	type ManagedFieldsEntry = {
 		"apiVersion"?: __cedar::String,
 		"fieldsType"?: __cedar::String,
 		"fieldsV1"?: FieldsV1,
@@ -2586,7 +2586,7 @@ namespace meta::v1 {
 		"subresource"?: __cedar::String,
 		"time"?: __cedar::String
 	};
-	entity ObjectMeta = {
+	type ObjectMeta = {
 		"annotations"?: Set < meta::v1::KeyValue >,
 		"creationTimestamp"?: __cedar::String,
 		"deletionGracePeriodSeconds"?: __cedar::Long,
@@ -2603,7 +2603,7 @@ namespace meta::v1 {
 		"selfLink"?: __cedar::String,
 		"uid"?: __cedar::String
 	};
-	entity OwnerReference = {
+	type OwnerReference = {
 		"apiVersion": __cedar::String,
 		"blockOwnerDeletion"?: __cedar::Bool,
 		"controller"?: __cedar::Bool,
@@ -2611,12 +2611,12 @@ namespace meta::v1 {
 		"name": __cedar::String,
 		"uid": __cedar::String
 	};
-	entity Patch;
-	entity Preconditions = {
+type Patch = {};
+	type Preconditions = {
 		"resourceVersion"?: __cedar::String,
 		"uid"?: __cedar::String
 	};
-	entity Status = {
+	type Status = {
 		"apiVersion"?: __cedar::String,
 		"code"?: __cedar::Long,
 		"details"?: StatusDetails,
@@ -2626,12 +2626,12 @@ namespace meta::v1 {
 		"reason"?: __cedar::String,
 		"status"?: __cedar::String
 	};
-	entity StatusCause = {
+	type StatusCause = {
 		"field"?: __cedar::String,
 		"message"?: __cedar::String,
 		"reason"?: __cedar::String
 	};
-	entity StatusDetails = {
+	type StatusDetails = {
 		"causes"?: Set < StatusCause >,
 		"group"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -2639,24 +2639,100 @@ namespace meta::v1 {
 		"retryAfterSeconds"?: __cedar::Long,
 		"uid"?: __cedar::String
 	};
-	entity WatchEvent = {
+	type WatchEvent = {
 		"object": __cedar::String,
 		"type": __cedar::String
 	};
 }
 
 namespace networking::v1 {
-	entity HTTPIngressPath = {
+	type HTTPIngressPath = {
 		"backend": IngressBackend,
 		"path"?: __cedar::String,
 		"pathType": __cedar::String
 	};
-	entity HTTPIngressRuleValue = {
+	type HTTPIngressRuleValue = {
 		"paths": Set < HTTPIngressPath >
 	};
-	entity IPBlock = {
+	type IPBlock = {
 		"cidr": __cedar::String,
 		"except"?: Set < __cedar::String >
+	};
+	type IngressBackend = {
+		"resource"?: core::v1::TypedLocalObjectReference,
+		"service"?: IngressServiceBackend
+	};
+	type IngressClassParametersReference = {
+		"apiGroup"?: __cedar::String,
+		"kind": __cedar::String,
+		"name": __cedar::String,
+		"namespace"?: __cedar::String,
+		"scope"?: __cedar::String
+	};
+	type IngressClassSpec = {
+		"controller"?: __cedar::String,
+		"parameters"?: IngressClassParametersReference
+	};
+	type IngressLoadBalancerIngress = {
+		"hostname"?: __cedar::String,
+		"ip"?: __cedar::String,
+		"ports"?: Set < IngressPortStatus >
+	};
+	type IngressLoadBalancerStatus = {
+		"ingress"?: Set < IngressLoadBalancerIngress >
+	};
+	type IngressPortStatus = {
+		"error"?: __cedar::String,
+		"port": __cedar::Long,
+		"protocol": __cedar::String
+	};
+	type IngressRule = {
+		"host"?: __cedar::String
+	};
+	type IngressServiceBackend = {
+		"name": __cedar::String,
+		"port"?: ServiceBackendPort
+	};
+	type IngressSpec = {
+		"defaultBackend"?: IngressBackend,
+		"ingressClassName"?: __cedar::String,
+		"rules"?: Set < IngressRule >,
+		"tls"?: Set < IngressTLS >
+	};
+	type IngressStatus = {
+		"loadBalancer"?: IngressLoadBalancerStatus
+	};
+	type IngressTLS = {
+		"hosts"?: Set < __cedar::String >,
+		"secretName"?: __cedar::String
+	};
+	type NetworkPolicyEgressRule = {
+		"ports"?: Set < NetworkPolicyPort >,
+		"to"?: Set < NetworkPolicyPeer >
+	};
+	type NetworkPolicyIngressRule = {
+		"from"?: Set < NetworkPolicyPeer >,
+		"ports"?: Set < NetworkPolicyPort >
+	};
+	type NetworkPolicyPeer = {
+		"ipBlock"?: IPBlock,
+		"namespaceSelector"?: meta::v1::LabelSelector,
+		"podSelector"?: meta::v1::LabelSelector
+	};
+	type NetworkPolicyPort = {
+		"endPort"?: __cedar::Long,
+		"port"?: __cedar::String,
+		"protocol"?: __cedar::String
+	};
+	type NetworkPolicySpec = {
+		"egress"?: Set < NetworkPolicyEgressRule >,
+		"ingress"?: Set < NetworkPolicyIngressRule >,
+		"podSelector": meta::v1::LabelSelector,
+		"policyTypes"?: Set < __cedar::String >
+	};
+	type ServiceBackendPort = {
+		"name"?: __cedar::String,
+		"number"?: __cedar::Long
 	};
 	entity Ingress = {
 		"apiVersion"?: __cedar::String,
@@ -2664,10 +2740,6 @@ namespace networking::v1 {
 		"metadata"?: meta::v1::ObjectMeta,
 		"spec"?: IngressSpec,
 		"status"?: IngressStatus
-	};
-	entity IngressBackend = {
-		"resource"?: core::v1::TypedLocalObjectReference,
-		"service"?: IngressServiceBackend
 	};
 	entity IngressClass = {
 		"apiVersion"?: __cedar::String,
@@ -2681,55 +2753,11 @@ namespace networking::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity IngressClassParametersReference = {
-		"apiGroup"?: __cedar::String,
-		"kind": __cedar::String,
-		"name": __cedar::String,
-		"namespace"?: __cedar::String,
-		"scope"?: __cedar::String
-	};
-	entity IngressClassSpec = {
-		"controller"?: __cedar::String,
-		"parameters"?: IngressClassParametersReference
-	};
 	entity IngressList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < Ingress >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity IngressLoadBalancerIngress = {
-		"hostname"?: __cedar::String,
-		"ip"?: __cedar::String,
-		"ports"?: Set < IngressPortStatus >
-	};
-	entity IngressLoadBalancerStatus = {
-		"ingress"?: Set < IngressLoadBalancerIngress >
-	};
-	entity IngressPortStatus = {
-		"error"?: __cedar::String,
-		"port": __cedar::Long,
-		"protocol": __cedar::String
-	};
-	entity IngressRule = {
-		"host"?: __cedar::String
-	};
-	entity IngressServiceBackend = {
-		"name": __cedar::String,
-		"port"?: ServiceBackendPort
-	};
-	entity IngressSpec = {
-		"defaultBackend"?: IngressBackend,
-		"ingressClassName"?: __cedar::String,
-		"rules"?: Set < IngressRule >,
-		"tls"?: Set < IngressTLS >
-	};
-	entity IngressStatus = {
-		"loadBalancer"?: IngressLoadBalancerStatus
-	};
-	entity IngressTLS = {
-		"hosts"?: Set < __cedar::String >,
-		"secretName"?: __cedar::String
 	};
 	entity NetworkPolicy = {
 		"apiVersion"?: __cedar::String,
@@ -2737,45 +2765,21 @@ namespace networking::v1 {
 		"metadata"?: meta::v1::ObjectMeta,
 		"spec"?: NetworkPolicySpec
 	};
-	entity NetworkPolicyEgressRule = {
-		"ports"?: Set < NetworkPolicyPort >,
-		"to"?: Set < NetworkPolicyPeer >
-	};
-	entity NetworkPolicyIngressRule = {
-		"from"?: Set < NetworkPolicyPeer >,
-		"ports"?: Set < NetworkPolicyPort >
-	};
 	entity NetworkPolicyList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < NetworkPolicy >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity NetworkPolicyPeer = {
-		"ipBlock"?: IPBlock,
-		"namespaceSelector"?: meta::v1::LabelSelector,
-		"podSelector"?: meta::v1::LabelSelector
-	};
-	entity NetworkPolicyPort = {
-		"endPort"?: __cedar::Long,
-		"port"?: __cedar::String,
-		"protocol"?: __cedar::String
-	};
-	entity NetworkPolicySpec = {
-		"egress"?: Set < NetworkPolicyEgressRule >,
-		"ingress"?: Set < NetworkPolicyIngressRule >,
-		"podSelector": meta::v1::LabelSelector,
-		"policyTypes"?: Set < __cedar::String >
-	};
-	entity ServiceBackendPort = {
-		"name"?: __cedar::String,
-		"number"?: __cedar::Long
-	};
 }
 
 namespace node::v1 {
-	entity Overhead = {
+	type Overhead = {
 		"podFixed"?: __cedar::String
+	};
+	type Scheduling = {
+		"nodeSelector"?: Set < meta::v1::KeyValue >,
+		"tolerations"?: Set < core::v1::Toleration >
 	};
 	entity RuntimeClass = {
 		"apiVersion"?: __cedar::String,
@@ -2791,13 +2795,24 @@ namespace node::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity Scheduling = {
-		"nodeSelector"?: Set < meta::v1::KeyValue >,
-		"tolerations"?: Set < core::v1::Toleration >
-	};
 }
 
 namespace policy::v1 {
+	type PodDisruptionBudgetSpec = {
+		"maxUnavailable"?: __cedar::String,
+		"minAvailable"?: __cedar::String,
+		"selector"?: meta::v1::LabelSelector,
+		"unhealthyPodEvictionPolicy"?: __cedar::String
+	};
+	type PodDisruptionBudgetStatus = {
+		"conditions"?: Set < meta::v1::Condition >,
+		"currentHealthy": __cedar::Long,
+		"desiredHealthy": __cedar::Long,
+		"disruptedPods"?: __cedar::String,
+		"disruptionsAllowed": __cedar::Long,
+		"expectedPods": __cedar::Long,
+		"observedGeneration"?: __cedar::Long
+	};
 	entity Eviction = {
 		"apiVersion"?: __cedar::String,
 		"deleteOptions"?: meta::v1::DeleteOptions,
@@ -2817,26 +2832,29 @@ namespace policy::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity PodDisruptionBudgetSpec = {
-		"maxUnavailable"?: __cedar::String,
-		"minAvailable"?: __cedar::String,
-		"selector"?: meta::v1::LabelSelector,
-		"unhealthyPodEvictionPolicy"?: __cedar::String
-	};
-	entity PodDisruptionBudgetStatus = {
-		"conditions"?: Set < meta::v1::Condition >,
-		"currentHealthy": __cedar::Long,
-		"desiredHealthy": __cedar::Long,
-		"disruptedPods"?: __cedar::String,
-		"disruptionsAllowed": __cedar::Long,
-		"expectedPods": __cedar::Long,
-		"observedGeneration"?: __cedar::Long
-	};
 }
 
 namespace rbac::v1 {
-	entity AggregationRule = {
+	type AggregationRule = {
 		"clusterRoleSelectors"?: Set < meta::v1::LabelSelector >
+	};
+	type PolicyRule = {
+		"apiGroups"?: Set < __cedar::String >,
+		"nonResourceURLs"?: Set < __cedar::String >,
+		"resourceNames"?: Set < __cedar::String >,
+		"resources"?: Set < __cedar::String >,
+		"verbs": Set < __cedar::String >
+	};
+	type RoleRef = {
+		"apiGroup": __cedar::String,
+		"kind": __cedar::String,
+		"name": __cedar::String
+	};
+	type Subject = {
+		"apiGroup"?: __cedar::String,
+		"kind": __cedar::String,
+		"name": __cedar::String,
+		"namespace"?: __cedar::String
 	};
 	entity ClusterRole = {
 		"aggregationRule"?: AggregationRule,
@@ -2864,13 +2882,6 @@ namespace rbac::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity PolicyRule = {
-		"apiGroups"?: Set < __cedar::String >,
-		"nonResourceURLs"?: Set < __cedar::String >,
-		"resourceNames"?: Set < __cedar::String >,
-		"resources"?: Set < __cedar::String >,
-		"verbs": Set < __cedar::String >
-	};
 	entity Role = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -2896,17 +2907,6 @@ namespace rbac::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity RoleRef = {
-		"apiGroup": __cedar::String,
-		"kind": __cedar::String,
-		"name": __cedar::String
-	};
-	entity Subject = {
-		"apiGroup"?: __cedar::String,
-		"kind": __cedar::String,
-		"name": __cedar::String,
-		"namespace"?: __cedar::String
-	};
 }
 
 namespace scheduling::v1 {
@@ -2928,6 +2928,51 @@ namespace scheduling::v1 {
 }
 
 namespace storage::v1 {
+	type CSIDriverSpec = {
+		"attachRequired"?: __cedar::Bool,
+		"fsGroupPolicy"?: __cedar::String,
+		"podInfoOnMount"?: __cedar::Bool,
+		"requiresRepublish"?: __cedar::Bool,
+		"seLinuxMount"?: __cedar::Bool,
+		"storageCapacity"?: __cedar::Bool,
+		"tokenRequests"?: Set < TokenRequest >,
+		"volumeLifecycleModes"?: Set < __cedar::String >
+	};
+	type CSINodeDriver = {
+		"allocatable"?: VolumeNodeResources,
+		"name": __cedar::String,
+		"nodeID": __cedar::String,
+		"topologyKeys"?: Set < __cedar::String >
+	};
+	type CSINodeSpec = {
+		"drivers": Set < CSINodeDriver >
+	};
+	type TokenRequest = {
+		"audience": __cedar::String,
+		"expirationSeconds"?: __cedar::Long
+	};
+	type VolumeAttachmentSource = {
+		"inlineVolumeSpec"?: core::v1::PersistentVolumeSpec,
+		"persistentVolumeName"?: __cedar::String
+	};
+	type VolumeAttachmentSpec = {
+		"attacher": __cedar::String,
+		"nodeName": __cedar::String,
+		"source": VolumeAttachmentSource
+	};
+	type VolumeAttachmentStatus = {
+		"attachError"?: VolumeError,
+		"attached": __cedar::Bool,
+		"attachmentMetadata"?: Set < meta::v1::KeyValue >,
+		"detachError"?: VolumeError
+	};
+	type VolumeError = {
+		"message"?: __cedar::String,
+		"time"?: __cedar::String
+	};
+	type VolumeNodeResources = {
+		"count"?: __cedar::Long
+	};
 	entity CSIDriver = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -2940,36 +2985,17 @@ namespace storage::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity CSIDriverSpec = {
-		"attachRequired"?: __cedar::Bool,
-		"fsGroupPolicy"?: __cedar::String,
-		"podInfoOnMount"?: __cedar::Bool,
-		"requiresRepublish"?: __cedar::Bool,
-		"seLinuxMount"?: __cedar::Bool,
-		"storageCapacity"?: __cedar::Bool,
-		"tokenRequests"?: Set < TokenRequest >,
-		"volumeLifecycleModes"?: Set < __cedar::String >
-	};
 	entity CSINode = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ObjectMeta,
 		"spec": CSINodeSpec
 	};
-	entity CSINodeDriver = {
-		"allocatable"?: VolumeNodeResources,
-		"name": __cedar::String,
-		"nodeID": __cedar::String,
-		"topologyKeys"?: Set < __cedar::String >
-	};
 	entity CSINodeList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < CSINode >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity CSINodeSpec = {
-		"drivers": Set < CSINodeDriver >
 	};
 	entity CSIStorageCapacity = {
 		"apiVersion"?: __cedar::String,
@@ -3004,10 +3030,6 @@ namespace storage::v1 {
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity TokenRequest = {
-		"audience": __cedar::String,
-		"expirationSeconds"?: __cedar::Long
-	};
 	entity VolumeAttachment = {
 		"apiVersion"?: __cedar::String,
 		"kind"?: __cedar::String,
@@ -3020,28 +3042,6 @@ namespace storage::v1 {
 		"items": Set < VolumeAttachment >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity VolumeAttachmentSource = {
-		"inlineVolumeSpec"?: core::v1::PersistentVolumeSpec,
-		"persistentVolumeName"?: __cedar::String
-	};
-	entity VolumeAttachmentSpec = {
-		"attacher": __cedar::String,
-		"nodeName": __cedar::String,
-		"source": VolumeAttachmentSource
-	};
-	entity VolumeAttachmentStatus = {
-		"attachError"?: VolumeError,
-		"attached": __cedar::Bool,
-		"attachmentMetadata"?: Set < meta::v1::KeyValue >,
-		"detachError"?: VolumeError
-	};
-	entity VolumeError = {
-		"message"?: __cedar::String,
-		"time"?: __cedar::String
-	};
-	entity VolumeNodeResources = {
-		"count"?: __cedar::Long
 	};
 }
 
@@ -3062,12 +3062,93 @@ namespace aws::k8s::cedar::v1alpha1 {
 }
 
 namespace flowcontrol::v1beta3 {
-	entity ExemptPriorityLevelConfiguration = {
+	type ExemptPriorityLevelConfiguration = {
 		"lendablePercent"?: __cedar::Long,
 		"nominalConcurrencyShares"?: __cedar::Long
 	};
-	entity FlowDistinguisherMethod = {
+	type FlowDistinguisherMethod = {
 		"type": __cedar::String
+	};
+	type FlowSchemaCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status"?: __cedar::String,
+		"type"?: __cedar::String
+	};
+	type FlowSchemaSpec = {
+		"distinguisherMethod"?: FlowDistinguisherMethod,
+		"matchingPrecedence"?: __cedar::Long,
+		"priorityLevelConfiguration": PriorityLevelConfigurationReference,
+		"rules"?: Set < PolicyRulesWithSubjects >
+	};
+	type FlowSchemaStatus = {
+		"conditions"?: Set < FlowSchemaCondition >
+	};
+	type GroupSubject = {
+		"name": __cedar::String
+	};
+	type LimitResponse = {
+		"queuing"?: QueuingConfiguration,
+		"type": __cedar::String
+	};
+	type LimitedPriorityLevelConfiguration = {
+		"borrowingLimitPercent"?: __cedar::Long,
+		"lendablePercent"?: __cedar::Long,
+		"limitResponse"?: LimitResponse,
+		"nominalConcurrencyShares"?: __cedar::Long
+	};
+	type NonResourcePolicyRule = {
+		"nonResourceURLs": Set < __cedar::String >,
+		"verbs": Set < __cedar::String >
+	};
+	type PolicyRulesWithSubjects = {
+		"nonResourceRules"?: Set < NonResourcePolicyRule >,
+		"resourceRules"?: Set < ResourcePolicyRule >,
+		"subjects": Set < Subject >
+	};
+	type PriorityLevelConfigurationCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status"?: __cedar::String,
+		"type"?: __cedar::String
+	};
+	type PriorityLevelConfigurationReference = {
+		"name": __cedar::String
+	};
+	type PriorityLevelConfigurationSpec = {
+		"exempt"?: ExemptPriorityLevelConfiguration,
+		"limited"?: LimitedPriorityLevelConfiguration,
+		"type": __cedar::String
+	};
+	type PriorityLevelConfigurationStatus = {
+		"conditions"?: Set < PriorityLevelConfigurationCondition >
+	};
+	type QueuingConfiguration = {
+		"handSize"?: __cedar::Long,
+		"queueLengthLimit"?: __cedar::Long,
+		"queues"?: __cedar::Long
+	};
+	type ResourcePolicyRule = {
+		"apiGroups": Set < __cedar::String >,
+		"clusterScope"?: __cedar::Bool,
+		"namespaces"?: Set < __cedar::String >,
+		"resources": Set < __cedar::String >,
+		"verbs": Set < __cedar::String >
+	};
+	type ServiceAccountSubject = {
+		"name": __cedar::String,
+		"namespace": __cedar::String
+	};
+	type Subject = {
+		"group"?: GroupSubject,
+		"kind": __cedar::String,
+		"serviceAccount"?: ServiceAccountSubject,
+		"user"?: UserSubject
+	};
+	type UserSubject = {
+		"name": __cedar::String
 	};
 	entity FlowSchema = {
 		"apiVersion"?: __cedar::String,
@@ -3076,49 +3157,11 @@ namespace flowcontrol::v1beta3 {
 		"spec"?: FlowSchemaSpec,
 		"status"?: FlowSchemaStatus
 	};
-	entity FlowSchemaCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status"?: __cedar::String,
-		"type"?: __cedar::String
-	};
 	entity FlowSchemaList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < FlowSchema >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity FlowSchemaSpec = {
-		"distinguisherMethod"?: FlowDistinguisherMethod,
-		"matchingPrecedence"?: __cedar::Long,
-		"priorityLevelConfiguration": PriorityLevelConfigurationReference,
-		"rules"?: Set < PolicyRulesWithSubjects >
-	};
-	entity FlowSchemaStatus = {
-		"conditions"?: Set < FlowSchemaCondition >
-	};
-	entity GroupSubject = {
-		"name": __cedar::String
-	};
-	entity LimitResponse = {
-		"queuing"?: QueuingConfiguration,
-		"type": __cedar::String
-	};
-	entity LimitedPriorityLevelConfiguration = {
-		"borrowingLimitPercent"?: __cedar::Long,
-		"lendablePercent"?: __cedar::Long,
-		"limitResponse"?: LimitResponse,
-		"nominalConcurrencyShares"?: __cedar::Long
-	};
-	entity NonResourcePolicyRule = {
-		"nonResourceURLs": Set < __cedar::String >,
-		"verbs": Set < __cedar::String >
-	};
-	entity PolicyRulesWithSubjects = {
-		"nonResourceRules"?: Set < NonResourcePolicyRule >,
-		"resourceRules"?: Set < ResourcePolicyRule >,
-		"subjects": Set < Subject >
 	};
 	entity PriorityLevelConfiguration = {
 		"apiVersion"?: __cedar::String,
@@ -3127,90 +3170,130 @@ namespace flowcontrol::v1beta3 {
 		"spec"?: PriorityLevelConfigurationSpec,
 		"status"?: PriorityLevelConfigurationStatus
 	};
-	entity PriorityLevelConfigurationCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status"?: __cedar::String,
-		"type"?: __cedar::String
-	};
 	entity PriorityLevelConfigurationList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < PriorityLevelConfiguration >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
 	};
-	entity PriorityLevelConfigurationReference = {
-		"name": __cedar::String
-	};
-	entity PriorityLevelConfigurationSpec = {
-		"exempt"?: ExemptPriorityLevelConfiguration,
-		"limited"?: LimitedPriorityLevelConfiguration,
-		"type": __cedar::String
-	};
-	entity PriorityLevelConfigurationStatus = {
-		"conditions"?: Set < PriorityLevelConfigurationCondition >
-	};
-	entity QueuingConfiguration = {
-		"handSize"?: __cedar::Long,
-		"queueLengthLimit"?: __cedar::Long,
-		"queues"?: __cedar::Long
-	};
-	entity ResourcePolicyRule = {
-		"apiGroups": Set < __cedar::String >,
-		"clusterScope"?: __cedar::Bool,
-		"namespaces"?: Set < __cedar::String >,
-		"resources": Set < __cedar::String >,
-		"verbs": Set < __cedar::String >
-	};
-	entity ServiceAccountSubject = {
-		"name": __cedar::String,
-		"namespace": __cedar::String
-	};
-	entity Subject = {
-		"group"?: GroupSubject,
-		"kind": __cedar::String,
-		"serviceAccount"?: ServiceAccountSubject,
-		"user"?: UserSubject
-	};
-	entity UserSubject = {
-		"name": __cedar::String
-	};
 }
 
 namespace autoscaling::v2 {
-	entity ContainerResourceMetricSource = {
+	type ContainerResourceMetricSource = {
 		"container": __cedar::String,
 		"name": __cedar::String,
 		"target": MetricTarget
 	};
-	entity ContainerResourceMetricStatus = {
+	type ContainerResourceMetricStatus = {
 		"container": __cedar::String,
 		"current": MetricValueStatus,
 		"name": __cedar::String
 	};
-	entity CrossVersionObjectReference = {
+	type CrossVersionObjectReference = {
 		"apiVersion"?: __cedar::String,
 		"kind": __cedar::String,
 		"name": __cedar::String
 	};
-	entity ExternalMetricSource = {
+	type ExternalMetricSource = {
 		"metric": MetricIdentifier,
 		"target": MetricTarget
 	};
-	entity ExternalMetricStatus = {
+	type ExternalMetricStatus = {
 		"current": MetricValueStatus,
 		"metric": MetricIdentifier
 	};
-	entity HPAScalingPolicy = {
+	type HPAScalingPolicy = {
 		"periodSeconds": __cedar::Long,
 		"type": __cedar::String,
 		"value": __cedar::Long
 	};
-	entity HPAScalingRules = {
+	type HPAScalingRules = {
 		"policies"?: Set < HPAScalingPolicy >,
 		"selectPolicy"?: __cedar::String,
 		"stabilizationWindowSeconds"?: __cedar::Long
+	};
+	type HorizontalPodAutoscalerBehavior = {
+		"scaleDown"?: HPAScalingRules,
+		"scaleUp"?: HPAScalingRules
+	};
+	type HorizontalPodAutoscalerCondition = {
+		"lastTransitionTime"?: __cedar::String,
+		"message"?: __cedar::String,
+		"reason"?: __cedar::String,
+		"status": __cedar::String,
+		"type": __cedar::String
+	};
+	type HorizontalPodAutoscalerSpec = {
+		"behavior"?: HorizontalPodAutoscalerBehavior,
+		"maxReplicas": __cedar::Long,
+		"metrics"?: Set < MetricSpec >,
+		"minReplicas"?: __cedar::Long,
+		"scaleTargetRef": CrossVersionObjectReference
+	};
+	type HorizontalPodAutoscalerStatus = {
+		"conditions"?: Set < HorizontalPodAutoscalerCondition >,
+		"currentMetrics"?: Set < MetricStatus >,
+		"currentReplicas"?: __cedar::Long,
+		"desiredReplicas": __cedar::Long,
+		"lastScaleTime"?: __cedar::String,
+		"observedGeneration"?: __cedar::Long
+	};
+	type MetricIdentifier = {
+		"name": __cedar::String,
+		"selector"?: meta::v1::LabelSelector
+	};
+	type MetricSpec = {
+		"containerResource"?: ContainerResourceMetricSource,
+		"external"?: ExternalMetricSource,
+		"object"?: ObjectMetricSource,
+		"pods"?: PodsMetricSource,
+		"resource"?: ResourceMetricSource,
+		"type": __cedar::String
+	};
+	type MetricStatus = {
+		"containerResource"?: ContainerResourceMetricStatus,
+		"external"?: ExternalMetricStatus,
+		"object"?: ObjectMetricStatus,
+		"pods"?: PodsMetricStatus,
+		"resource"?: ResourceMetricStatus,
+		"type": __cedar::String
+	};
+	type MetricTarget = {
+		"averageUtilization"?: __cedar::Long,
+		"averageValue"?: __cedar::String,
+		"type": __cedar::String,
+		"value"?: __cedar::String
+	};
+	type MetricValueStatus = {
+		"averageUtilization"?: __cedar::Long,
+		"averageValue"?: __cedar::String,
+		"value"?: __cedar::String
+	};
+	type ObjectMetricSource = {
+		"describedObject": CrossVersionObjectReference,
+		"metric": MetricIdentifier,
+		"target": MetricTarget
+	};
+	type ObjectMetricStatus = {
+		"current": MetricValueStatus,
+		"describedObject": CrossVersionObjectReference,
+		"metric": MetricIdentifier
+	};
+	type PodsMetricSource = {
+		"metric": MetricIdentifier,
+		"target": MetricTarget
+	};
+	type PodsMetricStatus = {
+		"current": MetricValueStatus,
+		"metric": MetricIdentifier
+	};
+	type ResourceMetricSource = {
+		"name": __cedar::String,
+		"target": MetricTarget
+	};
+	type ResourceMetricStatus = {
+		"current": MetricValueStatus,
+		"name": __cedar::String
 	};
 	entity HorizontalPodAutoscaler = {
 		"apiVersion"?: __cedar::String,
@@ -3219,94 +3302,11 @@ namespace autoscaling::v2 {
 		"spec"?: HorizontalPodAutoscalerSpec,
 		"status"?: HorizontalPodAutoscalerStatus
 	};
-	entity HorizontalPodAutoscalerBehavior = {
-		"scaleDown"?: HPAScalingRules,
-		"scaleUp"?: HPAScalingRules
-	};
-	entity HorizontalPodAutoscalerCondition = {
-		"lastTransitionTime"?: __cedar::String,
-		"message"?: __cedar::String,
-		"reason"?: __cedar::String,
-		"status": __cedar::String,
-		"type": __cedar::String
-	};
 	entity HorizontalPodAutoscalerList = {
 		"apiVersion"?: __cedar::String,
 		"items": Set < HorizontalPodAutoscaler >,
 		"kind"?: __cedar::String,
 		"metadata"?: meta::v1::ListMeta
-	};
-	entity HorizontalPodAutoscalerSpec = {
-		"behavior"?: HorizontalPodAutoscalerBehavior,
-		"maxReplicas": __cedar::Long,
-		"metrics"?: Set < MetricSpec >,
-		"minReplicas"?: __cedar::Long,
-		"scaleTargetRef": CrossVersionObjectReference
-	};
-	entity HorizontalPodAutoscalerStatus = {
-		"conditions"?: Set < HorizontalPodAutoscalerCondition >,
-		"currentMetrics"?: Set < MetricStatus >,
-		"currentReplicas"?: __cedar::Long,
-		"desiredReplicas": __cedar::Long,
-		"lastScaleTime"?: __cedar::String,
-		"observedGeneration"?: __cedar::Long
-	};
-	entity MetricIdentifier = {
-		"name": __cedar::String,
-		"selector"?: meta::v1::LabelSelector
-	};
-	entity MetricSpec = {
-		"containerResource"?: ContainerResourceMetricSource,
-		"external"?: ExternalMetricSource,
-		"object"?: ObjectMetricSource,
-		"pods"?: PodsMetricSource,
-		"resource"?: ResourceMetricSource,
-		"type": __cedar::String
-	};
-	entity MetricStatus = {
-		"containerResource"?: ContainerResourceMetricStatus,
-		"external"?: ExternalMetricStatus,
-		"object"?: ObjectMetricStatus,
-		"pods"?: PodsMetricStatus,
-		"resource"?: ResourceMetricStatus,
-		"type": __cedar::String
-	};
-	entity MetricTarget = {
-		"averageUtilization"?: __cedar::Long,
-		"averageValue"?: __cedar::String,
-		"type": __cedar::String,
-		"value"?: __cedar::String
-	};
-	entity MetricValueStatus = {
-		"averageUtilization"?: __cedar::Long,
-		"averageValue"?: __cedar::String,
-		"value"?: __cedar::String
-	};
-	entity ObjectMetricSource = {
-		"describedObject": CrossVersionObjectReference,
-		"metric": MetricIdentifier,
-		"target": MetricTarget
-	};
-	entity ObjectMetricStatus = {
-		"current": MetricValueStatus,
-		"describedObject": CrossVersionObjectReference,
-		"metric": MetricIdentifier
-	};
-	entity PodsMetricSource = {
-		"metric": MetricIdentifier,
-		"target": MetricTarget
-	};
-	entity PodsMetricStatus = {
-		"current": MetricValueStatus,
-		"metric": MetricIdentifier
-	};
-	entity ResourceMetricSource = {
-		"name": __cedar::String,
-		"target": MetricTarget
-	};
-	entity ResourceMetricStatus = {
-		"current": MetricValueStatus,
-		"name": __cedar::String
 	};
 }
 

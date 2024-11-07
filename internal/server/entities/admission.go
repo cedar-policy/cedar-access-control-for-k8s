@@ -219,7 +219,7 @@ func walkObject(i int, group, version, kind, keyName string, obj any) (cedartype
 		return nil, nil
 	}
 
-	// TODO: This is a hack until key/value objects are supported
+	// TODO: ENTITY TAGS: This is a hack until key/value objects are supported
 	// g/v/k/attrNames
 	knownKeyValueStringMapAttributes := map[string]map[string]map[string][]string{
 		"core": {
