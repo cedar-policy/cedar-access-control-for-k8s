@@ -183,7 +183,7 @@ finch vm status
     Create a ConfigMap as the sample user with the label `owner={principal.name}`.
 
     ```bash
-    cat << EOF | kubectl apply -f -
+    cat << EOF | KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl apply -f -
     apiVersion: v1
     kind: ConfigMap
     metadata:
