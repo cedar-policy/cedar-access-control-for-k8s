@@ -114,16 +114,19 @@ finch vm status
 
 6. Now you can make requests! You'll need to use the generated `kubeconfig` in `./mount/test-user-kubeconfig.yam` created in the previous step. Your default `kubeconfig` (`~/.kube/config`) will be autoconfigured by kind with a cluster administrator identity, so `kubectl` without specifying a `kubeconfig` should always just work.
 
-    Try getting resources.
+    Let's test both `kubeconfig` files to validate if our setup is working.
+
+    Try getting resources like Pods and Nodes.
 
     ```bash
     KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get pods --all-namespaces # allowed
     KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get nodes # denied
     ```
 
-    As `cluster-admin`, list Secrets.
+    As `cluster-admin`, list Secrets and Nodes.
 
     ```bash
+    kubectl get nodes
     kubectl get secrets --show-labels
     ```
 
@@ -133,69 +136,7 @@ finch vm status
     KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get secrets # denied
     ```
 
-    Try listing Secrets using attribute-based label selection.
-
-    ```bash
-    KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get secrets -l owner=test-user --show-labels # allowed
-    ```
-
-    Impersonation
-
-    ```bash
-    KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl get service \
-        --as system:serviceaccount:default:service-manager
-    ```
-
-7. Try out admission policies:
-
-    ```bash
-    make admission-webhook
-    ```
-
-    (Optional) Update the validating webhook API groups/versions/resources you want validated by editing `manifests/admission-webhook.yaml`. Then apply the custom example admission policy.
-
-    ```bash
-    kubectl apply -f demo/admission-policy.yaml
-    ```
-
-    Create sample user in requires-labels group.
-
-    ```bash
-    make sample-user-kubeconfig
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl auth whoami
-    # ATTRIBUTE   VALUE
-    # Username    sample-user
-    # Groups      [sample-group requires-labels system:authenticated]
-    ```
-
-    Try to create a ConfigMap without labels as the sample user.
-
-    ```bash
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl create configmap test-config --from-literal=k1=v1 # allowed
-    ```
-
-    Try to list existing ConfigMaps.
-
-    ```bash
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl get configmap # denied
-    ```
-
-    Create a ConfigMap as the sample user with the label `owner={principal.name}`.
-
-    ```bash
-    cat << EOF | KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl apply -f -
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-        name: sample-config
-        labels:
-            owner: sample-user
-    data:
-        stage: test
-    EOF
-
-    KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl get configmap -l owner=sample-user --show-labels # allowed
-    ```
+7. Try out the scenarios on the [Demo](./Demo.md) for different policies for authorization access and admission controls.
 
 ## Cleanup
 
