@@ -376,12 +376,11 @@ forbid (
 
 Let's try this as well.
 
-As `cluster-admin`
+First, let's create the `kubeconfig` access for a `sample-user`.
 
 ```bash
-kubectl create configmap other-config --from-literal=foo=bar
-kubectl label cm/other-config owner=some-user
-kubectl get cm --show-labels
+cd cedar-access-control-for-k8s
+make make sample-user-kubeconfig
 ```
 
 Validate the `sample-user`.
@@ -391,6 +390,14 @@ KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl auth whoami
 # ATTRIBUTE   VALUE
 # Username    sample-user
 # Groups      [sample-group requires-labels system:authenticated]
+```
+
+As `cluster-admin`, try to get resources.
+
+```bash
+kubectl create configmap other-config --from-literal=foo=bar
+kubectl label cm/other-config owner=some-user
+kubectl get cm --show-labels
 ```
 
 Try to list ConfigMaps, or modify a ConfigMap as `sample-user`
