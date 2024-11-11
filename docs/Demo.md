@@ -222,6 +222,12 @@ KUBECONFIG=./mount/test-user-kubeconfig.yaml kubectl --as system:serviceaccount:
 
 ### Admission
 
+In order to setup the Admission configuration, you need to run the following command to apply the `admission-webhook` manifest to your cluster.
+
+```bash
+make admission-webhook
+```
+
 During the setup, we already applied a few admission policies written on the file [`demo/admission-policy.yaml](../demo/admission-policy.yaml). If you made changes on this file, run the following to apply the customized policies.
 
 ```bash
@@ -410,7 +416,7 @@ KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl label cm/other-config sta
 Try to create a new ConfigMap.
 
 ```bash
-KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl create cm sample-config --from-literal=k1=v1 # allowed
+KUBECONFIG=./mount/sample-user-kubeconfig.yaml kubectl create cm sample-config --from-literal=k1=v1 # denied
 ```
 
 Now, try to create a ConfigMaps with the label `owner=sample-user`, and list the ConfigMaps with that specific label.
