@@ -10354,8 +10354,7 @@
 						"type": "Set",
 						"required": true,
 						"element": {
-							"type": "Entity",
-							"name": "APIResource"
+							"type": "APIResource"
 						}
 					}
 				}
